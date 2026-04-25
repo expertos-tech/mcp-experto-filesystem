@@ -91,20 +91,46 @@ Whether you are a human contributor or an AI agent, our documentation is your so
 
 ---
 
+## Getting Started
+
+> The server is under active development. The steps below describe the intended local setup once
+> the initial implementation is complete.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/expertostech/mcp-experto-filesystem.git
+cd mcp-experto-filesystem
+
+# 2. Install dependencies (requires Python 3.11+)
+uv sync --all-extras
+
+# 3. Run the validation suite
+uv run ruff check src tests
+uv run mypy src
+uv run pytest --cov=src --cov-branch
+
+# 4. Register with your MCP client (e.g., Claude Desktop)
+# Add the server entry to your client's mcp_servers config pointing to the stdio entrypoint.
+```
+
+For configuration options and detailed integration instructions, see [docs/architecture.md](./docs/architecture.md).
+
+---
+
 ## Contributing
 
-We are in the early stages of architecting this solution and welcome all contributions.  
+We are in the early stages of architecting this solution and welcome all contributions.
 
-1. Check the [Development Standards](./docs/development-standards.md).  
-2. Understand our AI philosophy in the [MCP Design Guidelines](./docs/mcp-design-guidelines.md).  
-3. Open an issue to discuss your ideas or submit a PR.  
+1. Check the [Development Standards](./docs/development-standards.md).
+2. Understand our AI philosophy in the [MCP Design Guidelines](./docs/mcp-design-guidelines.md).
+3. Open an issue to discuss your ideas or submit a PR.
 
 ---
 
 ## About Expertos Tech
 
-We are a community focused on software engineering, cloud architecture, and AI education. We believe in building  
-tools that help developers work smarter, not harder.  
+We are a community focused on software engineering, cloud architecture, and AI education. We believe in building
+tools that help developers work smarter, not harder.
 
-* **Website:** [expertostech.dev](https://expertostech.dev)  
-* **License:** TBD. Experimental project, use with care.  
+* **Website:** [expertostech.dev](https://expertostech.dev)
+* **License:** MIT. See [LICENSE](./LICENSE) for details.
