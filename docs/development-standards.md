@@ -1,6 +1,18 @@
+<!-- AGENTS SUMMARY
+Technical development standards for Python engineering and internal software architecture.  
+Sessions:
+- RUNTIME-STANDARDS: Python version, package management (uv), and configuration.
+- CODE-STYLE: Formatting rules, naming conventions, and inline comment prohibitions.
+- DESIGN-PATTERNS: Implementation of OOP principles and specific design patterns.
+- BOILERPLATE-REDUCTION: Usage of dataclasses and Pydantic for cleaner code.
+- INTERNAL-ARCHITECTURE: Layered boundaries (Tool, Service, Domain, Infrastructure).
+- DOCSTRING-STANDARDS: Mandatory documentation for public APIs using Google/NumPy style.
+-->
+
 # Development Standards (Python & Engineering)
 
-This document defines the technical development standards for `mcp-experto-filesystem`. For AI-specific tool design and token economy guidelines, see [MCP Design Guidelines](./mcp-design-guidelines.md).
+This document defines the technical development standards for mcp-experto-filesystem. For AI-specific tool design and  
+token economy guidelines, see [MCP Design Guidelines](./mcp-design-guidelines.md).  
 
 ## Table of Contents
 
@@ -30,60 +42,68 @@ This document defines the technical development standards for `mcp-experto-files
 
 ## Purpose
 
-This document defines how to write and organize the Python code for `mcp-experto-filesystem`. The goal is to maintain a boring, stable, and highly maintainable codebase that powers a powerful external MCP interface.
+This document defines how to write and organize the Python code for mcp-experto-filesystem. The goal is to maintain a  
+boring, stable, and maintainable codebase that powers a powerful external MCP interface.  
 
 ---
 
 ## Reference Basis
 
-Aligned with official Python guidance (PEPs), docstring conventions, and modern packaging via `pyproject.toml`.
+Aligned with official Python guidance (PEPs), docstring conventions, and modern packaging via pyproject.toml.  
 
 ---
 
+<!-- START RUNTIME-STANDARDS -->
 ## Python Version and Runtime Standards
 
-* **Target:** Python `3.11+` (Prefer `3.12+`).
-* **Package Management:** `uv` is recommended for local development.
-* **Configuration:** Centralize everything in `pyproject.toml`.
+* **Target:** Python 3.11+ (Prefer 3.12+).  
+* **Package Management:** uv is recommended for local development.  
+* **Configuration:** Centralize everything in pyproject.toml.  
+<!-- END RUNTIME-STANDARDS -->
 
 ---
 
+<!-- START CODE-STYLE -->
 ## Code Style
 
-Follow PEP 8.
-* 4 spaces for indentation.
-* `snake_case` for functions/variables.
-* `PascalCase` for classes.
-* Functions must be small and focused.
-* No inline comments. Code should be self-explanatory through descriptive naming.
-* Avoid hidden magic and global mutable state.
+Follow PEP 8.  
+* 4 spaces for indentation.  
+* snake_case for functions/variables.  
+* PascalCase for classes.  
+* Functions must be small and focused.  
+* No inline comments. Code should be self-explanatory through descriptive naming.  
+* Avoid hidden magic and global mutable state.  
+<!-- END CODE-STYLE -->
 
 ---
 
+<!-- START BOILERPLATE-REDUCTION -->
 ## Boilerplate Reduction Standards
 
-* **Dataclasses:** Use for simple internal data containers (prefer `frozen=True`).
-* **Pydantic:** Use for external contracts (MCP tools, config validation).
-* **Composition:** Inject collaborators instead of repeating plumbing.
-* **Factories:** Use for complex object setup.
+* **Dataclasses:** Use for simple internal data containers (prefer frozen=True).  
+* **Pydantic:** Use for external contracts (MCP tools, config validation).  
+* **Composition:** Inject collaborators instead of repeating plumbing.  
+* **Factories:** Use for complex object setup.  
+<!-- END BOILERPLATE-REDUCTION -->
 
 ---
 
 ## Object-Oriented Design Standards
 
-Use OOP to model clear boundaries, not for ceremony.
+Use OOP to model clear boundaries, not for ceremony.  
 
-* **Single Responsibility:** Each class has one clear reason to change.
-* **Dependency Inversion:** Depend on protocols (`typing.Protocol`) where useful.
-* **Composition Over Inheritance:** Avoid deep inheritance trees.
-* **Private by Default:** Internal methods start with `_`.
+* **Single Responsibility:** Each class has one clear reason to change.  
+* **Dependency Inversion:** Depend on protocols (typing.Protocol) where useful.  
+* **Composition Over Inheritance:** Avoid deep inheritance trees.  
+* **Private by Default:** Internal methods start with `_`.  
 
 ---
 
+<!-- START DESIGN-PATTERNS -->
 ## Design Patterns by Objective
 
 | Objective | Recommended Pattern |
-| --- | --- |
+| :--- | :--- |
 | Choose behavior at runtime | Strategy |
 | Create tool instances | Factory Method |
 | Coordinate complex workflows | Facade |
@@ -93,9 +113,11 @@ Use OOP to model clear boundaries, not for ceremony.
 | Manage write transactions | Unit of Work |
 | Encapsulate commands | Command |
 | Build complex responses | Builder |
+<!-- END DESIGN-PATTERNS -->
 
 ---
 
+<!-- START INTERNAL-ARCHITECTURE -->
 ## Recommended Internal Architecture
 
 ```text
@@ -107,57 +129,60 @@ Domain Services (Core Logic)
     ↓
 Infrastructure Adapters (Filesystem, SQLite, etc.)
 ```
+<!-- END INTERNAL-ARCHITECTURE -->
 
 ---
 
 ## Filesystem Standards
 
-* Always use `pathlib.Path`.
-* **Path Safety:** Resolve paths, ensure they stay inside project root, and reject traversal attacks.
+* Always use pathlib.Path.  
+* **Path Safety:** Resolve paths, ensure they stay inside project root, and reject traversal attacks.  
 
 ---
 
 ## Ignore Rules
 
 The server must default to ignoring noisy paths:
-* `.git/`, `.venv/`, `node_modules/`, `__pycache__/`, etc.
-* Binary files, logs, and sensitive files (`.env`).
+* .git/, .venv/, node_modules/, __pycache__/, etc.  
+* Binary files, logs, and sensitive files (.env).  
 
 ---
 
 ## Type Hinting Standards
 
-All public functions must have type hints.
-* Use modern union syntax: `str | None`.
-* Use built-in generics: `list[str]`.
-* Avoid `Any` where possible.
+All public functions must have type hints.  
+* Use modern union syntax: `str | None`.  
+* Use built-in generics: `list[str]`.  
+* Avoid Any where possible.  
 
 ---
 
+<!-- START DOCSTRING-STANDARDS -->
 ## Docstring Standards
 
-All public modules, classes, and functions must have Docstrings.
-* Use triple double-quotes (`\"\"\"`).
-* Follow Google Style or NumPy Style docstrings for consistency.
-* Documentation should focus on the contract, parameters, return types, and exceptions raised.
-* Private methods (starting with `_`) should also be documented if their logic is complex, though docstrings are mandatory only for the public API.
+All public modules, classes, and functions must have Docstrings.  
+* Use triple double-quotes (`\"\"\"`).  
+* Follow Google Style or NumPy Style docstrings for consistency.  
+* Documentation should focus on the contract, parameters, return types, and exceptions raised.  
+* Private methods should also be documented if their logic is complex.  
+<!-- END DOCSTRING-STANDARDS -->
 
 ---
 
 ## Error Handling Standards
 
-Errors must be explicit and domain-specific.
-* Use custom exception classes.
-* Avoid broad `try/except Exception`.
-* Include "why it failed" and "what to do next" in error messages.
+Errors must be explicit and domain-specific.  
+* Use custom exception classes.  
+* Avoid broad try/except Exception.  
+* Include "why it failed" and "what to do next" in error messages.  
 
 ---
 
 ## Logging Standards
 
-Use Python’s `logging` module.
-* Never use `print()` for application logs.
-* Do not log secrets or full file contents.
+Use Python's logging module.  
+* Never use print() for application logs.  
+* Do not log secrets or full file contents.  
 
 ---
 
@@ -178,9 +203,9 @@ tool_registry.register(
 
 ## Testing Standards
 
-* **Pytest:** Use as the test runner.
-* **Isolation:** Use temporary directories for filesystem tests.
-* **Categories:** Unit tests (domain logic), Integration tests (filesystem), Contract tests (MCP schema).
+* **Pytest:** Use as the test runner.  
+* **Isolation:** Use temporary directories for filesystem tests.  
+* **Categories:** Unit tests, Integration tests, Contract tests.  
 
 ---
 
@@ -197,30 +222,30 @@ mypy src
 
 ## Documentation Standards
 
-Documentation must stay close to behavior. Update READMEs, AGENTS.md, or /docs whenever contracts or safety rules change.
+Documentation must stay close to behavior. Update READMEs, AGENTS.md, or /docs whenever contracts or safety rules  
+change.  
 
 ---
 
 ## Pull Request Standards
 
-PRs should be small, focused, and include a description of the "why" and how it was tested.
+PRs should be small, focused, and include a description of the "why" and how it was tested.  
 
 ---
 
 ## Definition of Done
 
-* Behavior is implemented and verified.
-* Tests (unit/integration) pass.
-* Code is linted and formatted.
-* Documentation is updated.
-* Safety rules remain intact.
+* Behavior is implemented and verified.  
+* Tests (unit/integration) pass.  
+* Code is linted and formatted.  
+* Documentation is updated.  
+* Safety rules remain intact.  
 
 ---
 
 ## Strong Opinions
 
-* **Boring Interior:** Use established Python patterns.
-* **Explicit Over Implicit:** No magic behavior.
-* **Composition Over Everything:** High-level services coordinate small, focused components.
-* **Safety First:** Guardrails are non-negotiable features.
-drails are non-negotiable features.
+* **Boring Interior:** Use established Python patterns.  
+* **Explicit Over Implicit:** No magic behavior.  
+* **Composition Over Everything:** High-level services coordinate small, focused components.  
+* **Safety First:** Guardrails are non-negotiable features.  
