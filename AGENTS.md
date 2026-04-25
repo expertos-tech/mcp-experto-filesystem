@@ -163,10 +163,21 @@ docs(refactor): consolidate documentation for better navigation
 * `*commit`: Executes a semantic git commit for the session's work.  
 * `*commit-all`: Stages all pending changes and commits them with an "Additional Changes" summary.  
 * `*push`: Triggers a `*commit` and then pushes local commits to the remote repository.  
+* `*git-branch`: Automates branch creation based on **6. Git Rules**. The agent must ask for the functional  
+  purpose of the branch, generate a compliant semantic name, create the branch locally, and immediately push  
+  it to the remote repository.
 
 ### Cleanup & Maintenance
 * `*clean`: Removes all files within `./tmp/` except `prompt.md`.  
 * `*clean-prompt`: Resets `./tmp/prompt.md` preserving only Context and Instructions headers.  
+
+### Session Management
+* `*save-session`: Compiles an exhaustive, step-by-step record of the session. Before saving, the agent must  
+  check if `./tmp/last-session.md` exists. If it does, the agent must summarize its current content and ask the  
+  user whether to overwrite the file or append the new session data to it. The report includes execution  
+  plans, rationale, and a detailed list of file modifications.  
+* `*load-session`: Proactively checks for `./tmp/last-session.md`. If the file exists, the agent must recover  
+  and re-anchor all context, progress, and historical data into its active memory to ensure continuity.  
 <!-- END COMMAND-SHORTCUTS -->
 
 *Follow these rules strictly to ensure a safe and efficient development lifecycle.*  
