@@ -2,7 +2,7 @@
 
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class MCPMetrics(BaseModel):
@@ -14,8 +14,8 @@ class MCPMetrics(BaseModel):
 
 
 class MCPMeta(BaseModel):
-    warnings: list[str] = []
-    next_steps: list[str] = []
+    warnings: list[str] = Field(default_factory=list)
+    next_steps: list[str] = Field(default_factory=list)
 
 
 class MCPErrorDetail(BaseModel):
@@ -23,7 +23,7 @@ class MCPErrorDetail(BaseModel):
     message: str
     category: str  # CLIENT_ERROR | SERVER_ERROR | EXTERNAL_ERROR
     retryable: bool = False
-    context: dict[str, Any] = {}
+    context: dict[str, Any] = Field(default_factory=dict)
 
 
 class MCPResponse(BaseModel):
@@ -31,5 +31,5 @@ class MCPResponse(BaseModel):
     message: str
     data: Any = None
     error: MCPErrorDetail | None = None
-    meta: MCPMeta = MCPMeta()
-    metrics: MCPMetrics = MCPMetrics()
+    meta: MCPMeta = Field(default_factory=MCPMeta)
+    metrics: MCPMetrics = Field(default_factory=MCPMetrics)

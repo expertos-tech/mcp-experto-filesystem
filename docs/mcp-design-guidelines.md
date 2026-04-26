@@ -9,6 +9,7 @@ Sessions:
 - SEMANTIC-SEARCH: Embedding model requirements, similarity thresholds, fallback strategy.
 - TOKEN-BUDGET: Concrete soft/hard caps per content type with overflow strategies.
 - CACHING-STRATEGY: What to cache, TTLs, invalidation rules.
+- INSPECTOR-WORKFLOW: How to start the FastMCP Inspector and inspect the server tools.
 -->
 
 # MCP Tool Design Guidelines for AI Agents
@@ -28,6 +29,7 @@ use correctly.
 * [Token Budget Thresholds](#token-budget-thresholds)
 * [Caching for Token Efficiency](#caching-for-token-efficiency)
 * [Token Economy Examples](#token-economy-examples)
+* [Inspector Workflow](#inspector-workflow)
 
 ---
 
@@ -56,7 +58,8 @@ Every feature must reduce unnecessary context usage.
 * File maps over recursive dumps.
 * Cached analysis over repeated scanning.
 * Semantic retrieval over brute-force reading.
-* Dynamic toolsets: only load tool descriptions for the tools needed per query.
+* Dynamic toolsets when the runtime supports them cleanly. In the current implementation, prefer compact
+  runtime help over a custom discovery layer.
 
 **Avoid:**
 
@@ -102,6 +105,9 @@ Avoid forcing agents to combine dozens of low-level `read_file` and `list_dir` c
 * `find_relevant_files` instead of manual searching.
 * `read_file_excerpt` instead of reading 2000 lines.
 * `apply_patch` instead of overwriting the whole file.
+
+These examples describe the intended tooling direction. Some capabilities may still be exposed as POC placeholders
+until their underlying implementation is delivered.
 <!-- END HIGH-LEVEL-COMMANDS -->
 
 ---
@@ -124,7 +130,8 @@ are forbidden. One tool, one action, one output schema.
 * Use `enum` whenever the set of valid values is finite.
 * Annotate with `format` when applicable (e.g., `"format": "path"`, `"format": "regex"`).
 * Output must conform to a declared JSON schema; the server validates before returning.
-* Tool descriptions must be under 200 tokens; longer descriptions are truncated by the registry.
+* Tool descriptions must be under 200 tokens. In the current architecture, rely on `FastMCP` tool metadata and
+  project-authored help payloads rather than a custom registry.
 
 ### Input Validation Rules
 
@@ -133,6 +140,9 @@ are forbidden. One tool, one action, one output schema.
   from untrusted callers.
 * Reject oversized inputs early: define a `max_bytes` or `max_chars` limit per tool.
 * For shell-adjacent operations: use an allowlist of permitted operations, never a blocklist.
+* Agents and tool callers must never infer undocumented parameters or capabilities by pattern matching.
+* If a tool is documented as a POC placeholder, that placeholder status is the source of truth until the
+  implementation changes.
 
 ### Error Reporting
 
@@ -141,6 +151,8 @@ are forbidden. One tool, one action, one output schema.
 * Every error must include: `error_code` (machine-readable), `message` (human-readable),
   `category` (CLIENT_ERROR / SERVER_ERROR / EXTERNAL_ERROR), and `retryable` (bool).
 * Never leak stack traces, internal paths, or environment variable names in error messages.
+* If a tool exceeds its hard performance limit, it should return a structured server-side error with
+  `retryable: true` and guidance in `next_steps` to reduce scope.
 
 ### BAD vs GOOD Tool Design
 
@@ -155,6 +167,9 @@ read_file(path: str) -> str   # returns the entire file as a raw string
 ```text
 read_file_excerpt(path, query, max_tokens=800) -> {summary, excerpt, line_range, warnings}
 ```
+
+If the implementation is not ready yet, the tool must explicitly report that limitation. It must never return
+fabricated file content.
 
 **BAD** - Overly broad, no schema, no safety:
 
@@ -183,6 +198,9 @@ All MCP tool outputs must be designed for language models. Use predictable, stru
 * **warnings:** Information about skipped files or risks.
 * **next_steps:** Suggested follow-up actions for the agent.
 * **metadata:** Technical context (e.g., token-saving strategies applied).
+
+The current runtime also wraps every tool response in the project-wide MCP envelope:
+`status`, `message`, `data`, `error`, `meta`, and `metrics`.
 
 ### Example Response Shape
 
@@ -266,8 +284,8 @@ the scope of the next request.
 <!-- START CACHING-STRATEGY -->
 ## Caching for Token Efficiency
 
-Caching is a first-class feature. We cache project tree snapshots, file summaries, and semantic
-indexes to avoid paying the same token cost twice.
+Caching is a planned first-class feature. The target architecture caches project tree snapshots, file summaries, and
+semantic indexes to avoid paying the same token cost twice.
 
 ### What to Cache
 
@@ -277,7 +295,7 @@ indexes to avoid paying the same token cost twice.
 | File content hash | filesystem `mtime` | File `mtime` changed |
 | File summary | file content hash | Hash changed |
 | Semantic embeddings | file content hash | Hash changed |
-| `get_help()` registry | server lifetime | Server restart |
+| `get_help()` runtime help payload | server lifetime | Server restart |
 
 ### What NOT to Cache
 
@@ -290,6 +308,8 @@ indexes to avoid paying the same token cost twice.
 * Never return stale content silently when correctness is critical.
 * If the cache is stale and re-computation would exceed a time budget, return the stale result
   with a `warning` field noting the staleness and the age of the cache entry.
+* Future metadata layers should complement the `FastMCP` composition model instead of replacing it with a
+  parallel runtime registry.
 <!-- END CACHING-STRATEGY -->
 
 ---
@@ -315,6 +335,58 @@ indexes to avoid paying the same token cost twice.
 ### Tool Discovery
 
 * **Bad:** Load all 20+ tool descriptions into every LLM request (5,000-10,000 tokens overhead).
-* **Good:** Use semantic tool discovery - embed the user's intent and load only the top-3 matching
-  tool descriptions (approx. 300-600 tokens).
+* **Good:** Use semantic tool discovery when the capability exists, or otherwise use compact runtime help and
+  load only the tool details needed for the current request.
 <!-- END TOKEN-ECONOMY-EXAMPLES -->
+
+---
+
+<!-- START INSPECTOR-WORKFLOW -->
+## Inspector Workflow
+
+Use the FastMCP Inspector to validate the current server runtime and inspect the tools exposed by
+`src/server/main.py`.
+
+### Start the Inspector
+
+Run the following command from the repository root:
+
+```bash
+uv run fastmcp dev inspector src/server/main.py
+```
+
+This starts the local Inspector flow for the FastMCP application defined in `src/server/main.py`.
+
+### Connect to the Server
+
+After the Inspector UI opens:
+
+* Use the left-side menu and open **Connect**.
+* Confirm that the target points to the server loaded from `src/server/main.py`.
+* Start the connection so the Inspector can attach to the local FastMCP server runtime.
+
+### Initialize the Session
+
+Once connected:
+
+* Trigger **Initialize** from the Inspector flow.
+* Wait for the MCP session to complete initialization successfully.
+* Confirm that the server metadata is returned without protocol errors before testing tools.
+
+### Inspect the Tools
+
+After initialization:
+
+* Open the tools list in the Inspector.
+* Review the registered tools exposed by the current runtime.
+* Verify the tool names, descriptions, and input schemas before sending any test calls.
+
+For this project, the expected flow is:
+
+1. Connect from the left-side menu.
+2. Initialize the MCP session.
+3. Open the tool list and inspect the available tools.
+
+This sequence should be used before validating behavior in `get_help`, `project_overview`, or
+`read_file_excerpt`.
+<!-- END INSPECTOR-WORKFLOW -->

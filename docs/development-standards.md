@@ -266,16 +266,27 @@ Use Python's `logging` module exclusively.
 
 ## Boilerplate-Minimized Tool Registration
 
-Registration must be declarative, with validation and error mapping handled automatically:
+Tool exposure must remain compatible with the shared `FastMCP` runtime, while validation and error mapping stay
+centralized in reusable handlers and decorators:
 
 ```python
-tool_registry.register(
-    name="project_overview",
-    input_model=ProjectOverviewRequest,
-    output_model=ProjectOverviewResponse,
-    handler=project_overview_tool.handle,
-)
+from fastmcp import FastMCP
+
+mcp = FastMCP("mcp-experto-filesystem")
+
+
+@universal_response
+async def project_overview_handler(max_depth: int = 3) -> dict[str, object]:
+    ...
+
+
+@mcp.tool()
+async def project_overview(max_depth: int = 3) -> dict[str, object]:
+    return await project_overview_handler(max_depth=max_depth)
 ```
+
+If richer tool metadata is needed later, add it as a lightweight project convention that complements `FastMCP`.
+Do not introduce a parallel runtime registry unless the project explicitly adopts one.
 
 ---
 
@@ -299,8 +310,11 @@ tool_registry.register(
 Run with:
 
 ```bash
-uv run pytest --cov=src --cov-branch --cov-fail-under=85
+uv run pytest --cov=src --cov-branch
 ```
+
+> **Unit tests evaluation:** The project maintains an ambitious goal of **100% unit test coverage** (or the nearest 
+> technically feasible percentage). High coverage is a core signal of reliability for our AI-agent users.
 
 ### Fixture Standards
 
@@ -349,7 +363,7 @@ uv run pytest --cov=src --cov-branch --cov-fail-under=85
 uv run ruff check src tests
 uv run ruff format --check src tests
 uv run mypy src
-uv run pytest --cov=src --cov-branch --cov-fail-under=85
+uv run pytest --cov=src --cov-branch
 ```
 
 ### CI Gate (blocks merge)

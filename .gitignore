@@ -35,4 +35,5 @@ env/
 # Project Specific
 tmp/
 *.log
+.coverage
 .DS_Store

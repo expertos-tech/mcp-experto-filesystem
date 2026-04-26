@@ -21,10 +21,11 @@ Sessions:
 
 | File | Summary | When to Use |
 | :--- | :--- | :--- |
-| **[architecture.md](./architecture.md)** | stdio protocol, tool registration flow, Universal Response Payload, error schema, and performance SLAs. | Designing new tools or modifying the server's response contract. |
+| **[architecture.md](./architecture.md)** | stdio protocol, FastMCP composition flow, Universal Response Payload, error schema, and performance SLAs. | Designing new tools or modifying the server's response contract. |
 | **[development-standards.md](./development-standards.md)** | Python engineering standards: code style, error taxonomy, testing, dependency management, and CI/CD. | Writing or reviewing any Python code in this repository. |
 | **[markdown-standards.md](./markdown-standards.md)** | Mandatory formatting and structure rules for all Markdown files. | Creating or editing any `.md` file. |
 | **[mcp-design-guidelines.md](./mcp-design-guidelines.md)** | Principles for MCP tool design: token economy, safety, semantic search, and caching strategy. | Designing the behavior or UX of any MCP tool exposed to agents. |
+| **[../tmp/code-review.md](../tmp/code-review.md)** | Deep technical review of the FastMCP migration and POC tool implementation. | Evaluating the quality and architecture of recent server changes. |
 <!-- END DOCUMENTATION-MAP -->
 
 ---
@@ -49,7 +50,7 @@ They are distinct from the technical docs above and must be read before any othe
 * **Implementing new features:** Start with [Development Standards](./development-standards.md),
   then consult [Architecture](./architecture.md) for the response contract.
 * **Designing new MCP tools:** Read [MCP Design Guidelines](./mcp-design-guidelines.md) first,
-  then [Architecture](./architecture.md) for the registration flow.
+  then [Architecture](./architecture.md) for the current FastMCP composition flow.
 * **Writing documentation:** Follow [Markdown Standards](./markdown-standards.md) before
   creating or editing any `.md` file.
 * **AI agents:** Read [../AGENTS.md](../AGENTS.md) or [../CLAUDE.md](../CLAUDE.md) first,

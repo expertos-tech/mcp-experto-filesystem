@@ -9,8 +9,8 @@ Sessions:
 
 # Expertos Tech Filesystem MCP
 
-An opinionated, intelligence-first MCP (Model Context Protocol) server designed to give AI agents safe, token-efficient,  
-and semantic access to local codebases.  
+An opinionated, intelligence-first MCP (Model Context Protocol) server designed to give AI agents safe, token-efficient,
+and semantically guided access to local codebases.
 
 This project is an open-source initiative from the Expertos Tech community: [https://expertostech.dev](https://expertostech.dev)  
 
@@ -28,14 +28,14 @@ This project is an open-source initiative from the Expertos Tech community: [htt
 <!-- START PROBLEM-DEFINITION -->
 ## The Problem: Why This Project Exists
 
-Current AI agents interact with filesystems inefficiently. When asked to fix a bug or add a feature, they often:  
-* Blindly read entire repositories or massive files.  
-* Pollute their context window, wasting tokens and degrading reasoning.  
-* Perform risky write operations without understanding the project architecture.  
-* Fail to find relevant code because they rely on exact keyword matches.  
+Current AI agents interact with filesystems inefficiently. When asked to fix a bug or add a feature, they often:
+* Blindly read entire repositories or massive files.
+* Pollute their context window, wasting tokens and degrading reasoning.
+* Perform risky write operations without understanding the project architecture.
+* Fail to find relevant code because they rely on exact keyword matches.
 
-mcp-experto-filesystem solves this by acting as a Project-Aware Context Layer. Instead of giving the LLM a dumb  
-terminal to run commands, we provide high-level, strategic tools designed for Generative AI workflows.  
+mcp-experto-filesystem solves this by acting as a Project-Aware Context Layer. Instead of giving the LLM a dumb
+terminal to run commands, we provide high-level, strategic tools designed for Generative AI workflows.
 <!-- END PROBLEM-DEFINITION -->
 
 ---
@@ -43,13 +43,13 @@ terminal to run commands, we provide high-level, strategic tools designed for Ge
 <!-- START ARCHITECTURAL-GOALS -->
 ## Key Architectural Goals
 
-* **Extreme Token Economy:** We prioritize summaries, targeted line-range excerpts, and semantic retrieval over  
-  raw file dumps.  
-* **Safe and Guardrailed Automation:** Read-only by default. Write operations require explicit intent, diff-based  
-  previews, and respect project-specific protected areas.  
-* **High-Level Intelligence:** Tools that automatically understand project structure, separating source code  
-  from tests, configuration, and dependencies.  
-* **Local-First and Private:** Embeddings, caches, and indexes remain entirely on the developer's machine.  
+* **Extreme Token Economy:** We prioritize summaries, targeted line-range excerpts, and semantic retrieval over
+  raw file dumps.
+* **Safe and Guardrailed Automation:** Read-only by default. Write operations require explicit intent, diff-based
+  previews, and respect project-specific protected areas.
+* **High-Level Intelligence:** Tools that automatically understand project structure, separating source code
+  from tests, configuration, and dependencies.
+* **Local-First and Private:** Embeddings, caches, and indexes remain entirely on the developer's machine.
 <!-- END ARCHITECTURAL-GOALS -->
 
 ---
@@ -57,12 +57,12 @@ terminal to run commands, we provide high-level, strategic tools designed for Ge
 <!-- START DOCUMENTATION -->
 ## Documentation
 
-Whether you are a human contributor or an AI agent, our documentation is your source of truth:  
+Whether you are a human contributor or an AI agent, our documentation is your source of truth:
 
-* **[Technical Documentation Index](./docs/README.md):** The central hub for Python architecture, design  
-  guidelines, and engineering standards.  
-* **[AGENTS.md](./AGENTS.md):** Mandatory rules, persona, and command shortcuts for AI agents working in this  
-  repository. AI agents must read this first.  
+* **[Technical Documentation Index](./docs/README.md):** The central hub for Python architecture, design
+  guidelines, and engineering standards.
+* **[AGENTS.md](./AGENTS.md):** Mandatory rules, persona, and command shortcuts for AI agents working in this
+  repository. AI agents must read this first.
 <!-- END DOCUMENTATION -->
 
 ---
@@ -91,10 +91,25 @@ Whether you are a human contributor or an AI agent, our documentation is your so
 
 ---
 
+## Current Implementation Status
+
+The current runtime is based on `FastMCP` and exposes three public tools:
+
+* `get_help`, implemented and backed by runtime tool introspection.
+* `project_overview`, currently exposed as a POC placeholder.
+* `read_file_excerpt`, currently exposed as a POC placeholder.
+
+Every public tool is wrapped by the project's universal response contract, which standardizes
+`status`, `message`, `data`, `error`, `meta`, and `metrics`.
+
+Semantic search, filesystem traversal, intelligent excerpts, local caching, and safe write
+operations remain roadmap capabilities and are not implemented yet.
+
+---
+
 ## Getting Started
 
-> The server is under active development. The steps below describe the intended local setup once
-> the initial implementation is complete.
+> The server is under active development. The steps below reflect the current local development workflow.
 
 ```bash
 # 1. Clone the repository

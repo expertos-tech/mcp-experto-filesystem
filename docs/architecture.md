@@ -42,24 +42,31 @@ This ensures:
 <!-- START INITIALIZATION-DISCOVERY -->
 ## 2. Initialization and Self-Discovery
 
-To prevent LLMs from guessing how to use the server, the system provides aggressive self-discovery mechanisms.
+To prevent LLMs from guessing how to use the server, the system provides self-discovery mechanisms that
+fit the current `FastMCP` runtime.
 
-### 2.1 The initialize Hook
+### 2.1 FastMCP Initialization
 
-Upon connection, the server must return a Getting Started payload that includes:
+The current server delegates MCP lifecycle management and tool exposure to `FastMCP`.
 
-* A brief description of every registered tool (name, purpose, required parameters).
-* The standard response payload schema, so the agent knows how to parse all future responses.
-* Safety rules: which operations are read-only by default, which require explicit confirmation.
+On startup:
+
+* `src/server/main.py` creates a shared `FastMCP("mcp-experto-filesystem")` instance.
+* Tool modules register themselves against that shared application instance.
+* MCP clients discover tools through the standard MCP tool listing flow exposed by `FastMCP`.
+
+The project does not currently override the MCP initialize lifecycle with a custom getting-started payload.
+Instead, richer runtime guidance is exposed through `get_help()`.
 
 ### 2.2 The get_help Tool
 
-A dedicated `get_help` tool must be exposed to allow agents to query documentation dynamically.
+A dedicated `get_help` tool is exposed to provide runtime-aware documentation without introducing a separate
+runtime registry.
 
-* **get_help()** (no arguments): Returns the full initialization documentation.
-* **get_help(topic="standards")**: Returns strict instructions on how to parse the standard response payload.
-* **get_help(topic="[Tool Name]")**: Returns detailed instructions for a specific tool, including its
-  full input schema, output schema, and usage examples.
+* **get_help()** (no arguments): Returns a getting-started payload based on the current `FastMCP` runtime.
+* **get_help(topic="standards")**: Returns the Universal Response Payload contract.
+* **get_help(topic="[Tool Name]")**: Returns details for a registered tool using runtime metadata when available,
+  plus project-specific implementation-status notes.
 <!-- END INITIALIZATION-DISCOVERY -->
 
 ---
@@ -67,34 +74,36 @@ A dedicated `get_help` tool must be exposed to allow agents to query documentati
 <!-- START TOOL-REGISTRATION -->
 ## 3. Tool Registration Flow
 
-### 3.1 Registration Requirements
+### 3.1 Current FastMCP Composition Model
 
-Every tool must be registered with the following fields before the server starts accepting connections:
+Tools are registered directly with the shared `FastMCP` instance through `@mcp.tool()`.
+The current architecture separates runtime registration from handler logic:
 
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `name` | `str` | Unique, snake_case identifier |
-| `description` | `str` | One sentence summary for LLM discovery (max 200 tokens) |
-| `input_model` | `pydantic.BaseModel` | Validated input schema |
-| `output_model` | `pydantic.BaseModel` | Validated output schema |
-| `handler` | `Callable` | Pure function that implements the tool logic |
-| `read_only` | `bool` | Whether the tool mutates filesystem state |
+| Layer | Responsibility |
+| :--- | :--- |
+| `src/server/main.py` | Creates the shared `FastMCP` application and composes tool groups |
+| `src/server/tools/*.py` | Declares MCP tool functions and binds them to handlers |
+| `src/server/application/services/executor.py` | Applies the Universal Response contract through a decorator |
+| `src/server/share/responses.py` | Defines the shared response payload models |
 
 ### 3.2 Registration Lifecycle
 
-1. All tools are registered at module import time via `tool_registry.register(...)`.
-2. On `initialize`, the registry introspects all registered tools and builds the Getting Started payload.
-3. `get_help(topic="[Tool Name]")` queries the registry at runtime; no separate documentation file is needed.
-4. The registry validates that no two tools share the same `name` on startup; duplicate names raise `ConfigurationError`.
+1. `main.py` creates a single `FastMCP("mcp-experto-filesystem")` instance.
+2. Each tool module exports a registration function such as `register_help_tool(mcp)`.
+3. Registration functions declare public MCP tools with `@mcp.tool()`.
+4. Each public tool delegates to a handler that is already wrapped by the universal response decorator.
 
 ### 3.3 Tool Discovery by Agents
 
-Agents discover tools exclusively through:
+Agents discover tools through:
 
-1. The `initialize` response (full list at connection time).
-2. `get_help()` queries (on demand, cheaper than re-reading the full init payload).
+1. The MCP tool listing exposed by the `FastMCP` runtime.
+2. `get_help()` queries for current runtime details and project-specific implementation notes.
 
-Agents must never infer tool names or parameters by pattern-matching; they must use the registry.
+### 3.4 Future Metadata Expansion
+
+Richer metadata such as read-only flags, curated examples, or capability tiers may be added later.
+If introduced, that metadata must complement the `FastMCP` composition model.
 <!-- END TOOL-REGISTRATION -->
 
 ---
@@ -135,6 +144,9 @@ can parse responses predictably, regardless of the tool used.
 * **error (object | null):** Present only when status >= 400. Contains structured failure details.
 * **meta (object):** Contains `warnings` (non-fatal issues) and `next_steps` (agent guidance).
 * **metrics (object):** Telemetry data to monitor token economy and performance.
+
+In the current implementation, tool-specific content lives inside `data`, while the outer MCP envelope is produced
+by the universal response decorator.
 <!-- END STANDARD-PAYLOAD -->
 
 ---
@@ -210,11 +222,11 @@ and react to failure details rather than receiving an opaque empty response.
 | Directory traversal (up to 1000 files) | < 500 ms | 2 s |
 | Semantic search query | < 1 s | 3 s |
 | Write / patch operations | < 300 ms | 1 s |
-| get_help() (cached) | < 10 ms | 50 ms |
+| get_help() | < 10 ms | 50 ms |
 
 * All tools must include `execution_time_ms` in the `metrics` block.
-* Tools that exceed the hard limit must return a `SERVER_ERROR` with `retryable: true`
-  and a suggestion to reduce scope in `next_steps`.
+
+Caching of help payloads is a future optimization, not a current implementation detail.
 <!-- END PERFORMANCE-SLAS -->
 
 ---
