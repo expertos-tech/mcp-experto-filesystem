@@ -40,3 +40,4 @@ tmp/
 *.log
 .coverage
 .DS_Store
+.mcp.json
