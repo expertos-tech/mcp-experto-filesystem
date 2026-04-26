@@ -165,7 +165,10 @@ docs(refactor): consolidate documentation for better navigation
 * `*push`: Triggers a `*commit` and then pushes local commits to the remote repository.  
 * `*git-branch`: Automates branch creation based on **6. Git Rules**. The agent must ask for the functional  
   purpose of the branch, generate a compliant semantic name, create the branch locally, and immediately push  
-  it to the remote repository.
+  it to the remote repository.  
+* `*merge-main`: Finalizes the current branch workflow. It triggers a `*commit-all` and `*push` on the current  
+  branch, switches back to `main`, merges the feature branch into `main`, and then asks for user confirmation  
+  to delete the feature branch both locally and remotely.
 
 ### Cleanup & Maintenance
 * `*clean`: Removes all files within `./tmp/` except `prompt.md`.  
