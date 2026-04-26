@@ -32,6 +32,9 @@ env/
 .vscode/
 .idea/
 
+# Lock files
+uv.lock
+
 # Project Specific
 tmp/
 *.log
