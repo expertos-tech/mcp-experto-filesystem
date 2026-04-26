@@ -52,18 +52,20 @@ The current server delegates MCP lifecycle management and tool exposure to `Fast
 On startup:
 
 * `src/server/main.py` creates a shared `FastMCP("mcp-experto-filesystem")` instance.
+* The server loads `src/server/docs/server_instructions.md` and passes it to the FastMCP
+  `instructions` parameter.
 * Tool modules register themselves against that shared application instance.
 * MCP clients discover tools through the standard MCP tool listing flow exposed by `FastMCP`.
 
-The project does not currently override the MCP initialize lifecycle with a custom getting-started payload.
-Instead, richer runtime guidance is exposed through `get_help()`.
+The MCP lifecycle `initialize` response now carries lightweight onboarding instructions through
+FastMCP's native `instructions` field. Richer runtime guidance remains available through `get_help()`.
 
 ### 2.2 The get_help Tool
 
 A dedicated `get_help` tool is exposed to provide runtime-aware documentation without introducing a separate
 runtime registry.
 
-* **get_help()** (no arguments): Returns a getting-started payload based on the current `FastMCP` runtime.
+* **get_help()** (no arguments): Returns the `get_help` runtime document plus the current live tool list.
 * **get_help(topic="standards")**: Returns the Universal Response Payload contract.
 * **get_help(topic="[Tool Name]")**: Returns details for a registered tool using runtime metadata when available,
   plus project-specific implementation-status notes.

@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any
 
 from fastmcp import FastMCP
@@ -5,7 +6,20 @@ from fastmcp import FastMCP
 from server.application.services.executor import universal_response
 from server.exceptions import ToolExecutionError, ValidationError
 
+DOCS_DIR = Path(__file__).parent.parent / "docs"
 POC_TOOL_NAMES = {"project_overview", "read_file_excerpt"}
+
+
+def _load_doc(doc_name: str) -> str:
+    """Read a runtime markdown document by name."""
+    doc_path = DOCS_DIR / f"{doc_name}.md"
+    if not doc_path.is_file():
+        raise ToolExecutionError(
+            f"Documentation file not found: {doc_name}.md",
+            operation="get_help",
+            path=str(doc_path),
+        )
+    return doc_path.read_text(encoding="utf-8")
 
 
 def _extract_tool_input_schema(tool: Any) -> dict[str, Any] | None:
@@ -32,52 +46,93 @@ async def get_help_handler(topic: str | None = None, mcp: Any = None) -> dict[st
             operation="get_help",
         )
 
-    tools = await mcp.list_tools()
-    available_tools = [
-        {
-            "name": t.name,
-            "description": t.description,
-            "implementation_status": _tool_status(t.name),
-        }
-        for t in tools
-    ]
-
     if topic is None:
+        tools = await mcp.list_tools()
+        available_tools = [
+            {
+                "name": tool.name,
+                "description": tool.description,
+                "implementation_status": _tool_status(tool.name),
+                "more_info": f'call get_help(topic="{tool.name}")',
+            }
+            for tool in tools
+        ]
         return {
-            "title": "mcp-experto-filesystem - Getting Started",
-            "architecture": "FastMCP-based MCP server with a universal response decorator.",
+            "documentation": _load_doc("get_help"),
             "available_tools": available_tools,
-            "response_contract": {
-                "success": "status 200-299 with data populated and error set to null.",
-                "error": "status 400-599 with data set to null and error populated.",
-            },
-            "usage": "Call 'get_help(topic=\"[Tool Name]\")' for per-tool details.",
         }
 
     if topic.lower() == "standards":
+        python_parse_snippet = "\n".join(
+            [
+                "import json",
+                "response = json.loads(raw_json)",
+                "if response['status'] >= 400:",
+                "    err = response['error']",
+                "    print(err['error_code'], err['message'])",
+                "    if err['retryable']:",
+                "        pass",
+                "else:",
+                "    data = response['data']",
+                "    warnings = response['meta']['warnings']",
+                "    exec_ms = response['metrics']['execution_time_ms']",
+            ]
+        )
         return {
-            "title": "Universal Response Payload Standards",
-            "schema_info": {
-                "fields": ["status", "message", "data", "error", "meta", "metrics"],
-                "error_rule": "Errors must return data as null and populate the error object.",
+            "title": "Universal Response Envelope",
+            "schema": {
+                "status": "int - HTTP-style status code (200=success, 4xx/5xx=error)",
+                "message": "str - Human-readable summary",
+                "data": "any | null - Tool payload on success; null on error",
+                "error": {
+                    "error_code": (
+                        "str - VALIDATION_ERROR | PATH_SECURITY_ERROR | "
+                        "TOOL_EXECUTION_ERROR | INTERNAL_ERROR | UNEXPECTED_ERROR"
+                    ),
+                    "message": "str - Error detail",
+                    "category": "CLIENT_ERROR | SERVER_ERROR | EXTERNAL_ERROR",
+                    "retryable": "bool",
+                    "context": "dict - Operation-specific debug context",
+                },
+                "meta": {
+                    "warnings": "list[str] - Non-fatal warnings",
+                    "next_steps": "list[str] - Suggested follow-up actions",
+                },
+                "metrics": {
+                    "execution_time_ms": "float",
+                    "approx_input_tokens": "int",
+                    "approx_output_tokens": "int",
+                    "input_bytes": "int",
+                    "output_bytes": "int",
+                },
             },
+            "python_parse_snippet": python_parse_snippet,
         }
 
-    match = next((t for t in tools if t.name == topic), None)
-    if match:
+    try:
         return {
-            "tool": match.name,
-            "description": match.description,
-            "implementation_status": _tool_status(match.name),
-            "input_schema": _extract_tool_input_schema(match),
-            "notes": (
-                "This tool is currently exposed as a POC placeholder."
-                if match.name in POC_TOOL_NAMES
-                else "This tool is implemented in the current FastMCP runtime."
-            ),
+            "tool": topic,
+            "documentation": _load_doc(topic),
+            "implementation_status": _tool_status(topic),
         }
+    except ToolExecutionError:
+        tools = await mcp.list_tools()
+        match = next((tool for tool in tools if tool.name == topic), None)
+        if match:
+            return {
+                "tool": match.name,
+                "description": match.description,
+                "implementation_status": _tool_status(match.name),
+                "input_schema": _extract_tool_input_schema(match),
+                "note": (
+                    "No dedicated doc file found under src/server/docs. "
+                    "Use src/server/templates/tool_help_template.md when adding one."
+                ),
+            }
 
-    raise ValidationError(f"Unknown topic: '{topic}'")
+    raise ValidationError(
+        f"Unknown topic: '{topic}'. Call get_help() without arguments to see available tools."
+    )
 
 
 def register_help_tool(mcp: FastMCP) -> None:
