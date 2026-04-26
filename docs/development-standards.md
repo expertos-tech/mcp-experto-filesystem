@@ -12,6 +12,7 @@ Sessions:
 - TESTING-STANDARDS: pytest layout, coverage thresholds, fixture rules, mocking rules.
 - PERFORMANCE-STANDARDS: Latency targets, token budget caps, benchmarking requirements.
 - CI-CD: Local pre-commit commands and CI gate requirements.
+- INSPECTOR-WORKFLOW: How to start the FastMCP Inspector and inspect the server tools.
 -->
 
 # Development Standards (Python & Engineering)
@@ -36,7 +37,7 @@ token economy guidelines, see [MCP Design Guidelines](./mcp-design-guidelines.md
 * [Docstring Standards](#docstring-standards)
 * [Error Handling Standards](#error-handling-standards)
 * [Logging Standards](#logging-standards)
-* [Boilerplate-Minimized Tool Registration](#boilerplate-minimized-tool-registration)
+* [Tool Registration](#tool-registration)
 * [Testing Standards](#testing-standards)
 * [Performance Standards](#performance-standards)
 * [CI/CD Validation Pipeline](#cicd-validation-pipeline)
@@ -44,6 +45,7 @@ token economy guidelines, see [MCP Design Guidelines](./mcp-design-guidelines.md
 * [Pull Request Standards](#pull-request-standards)
 * [Definition of Done](#definition-of-done)
 * [Strong Opinions](#strong-opinions)
+* [Inspector Workflow](#inspector-workflow)
 
 ---
 
@@ -264,29 +266,10 @@ Use Python's `logging` module exclusively.
 
 ---
 
-## Boilerplate-Minimized Tool Registration
+## Tool Registration
 
-Tool exposure must remain compatible with the shared `FastMCP` runtime, while validation and error mapping stay
-centralized in reusable handlers and decorators:
-
-```python
-from fastmcp import FastMCP
-
-mcp = FastMCP("mcp-experto-filesystem")
-
-
-@universal_response
-async def project_overview_handler(max_depth: int = 3) -> dict[str, object]:
-    ...
-
-
-@mcp.tool()
-async def project_overview(max_depth: int = 3) -> dict[str, object]:
-    return await project_overview_handler(max_depth=max_depth)
-```
-
-If richer tool metadata is needed later, add it as a lightweight project convention that complements `FastMCP`.
-Do not introduce a parallel runtime registry unless the project explicitly adopts one.
+Tool registration follows the FastMCP composition model specified in
+[Architecture - Tool Registration Flow](./architecture.md#3-tool-registration-flow).
 
 ---
 
@@ -420,3 +403,55 @@ PRs must be small and focused. Include:
 * **Composition Over Everything:** High-level services coordinate small, focused components.
 * **Safety First:** Guardrails are non-negotiable features, not optional add-ons.
 * **Fail Loud, Fail Early:** Raise at the boundary; never silently return partial results.
+
+---
+
+<!-- START INSPECTOR-WORKFLOW -->
+## Inspector Workflow
+
+Use the FastMCP Inspector to validate the current server runtime and inspect the tools exposed by
+`src/server/main.py`.
+
+### Start the Inspector
+
+Run the following command from the repository root:
+
+```bash
+uv run fastmcp dev inspector src/server/main.py
+```
+
+This starts the local Inspector flow for the FastMCP application defined in `src/server/main.py`.
+
+### Connect to the Server
+
+After the Inspector UI opens:
+
+* Use the left-side menu and open **Connect**.
+* Confirm that the target points to the server loaded from `src/server/main.py`.
+* Start the connection so the Inspector can attach to the local FastMCP server runtime.
+
+### Initialize the Session
+
+Once connected:
+
+* Trigger **Initialize** from the Inspector flow.
+* Wait for the MCP session to complete initialization successfully.
+* Confirm that the server metadata is returned without protocol errors before testing tools.
+
+### Inspect the Tools
+
+After initialization:
+
+* Open the tools list in the Inspector.
+* Review the registered tools exposed by the current runtime.
+* Verify the tool names, descriptions, and input schemas before sending any test calls.
+
+For this project, the expected flow is:
+
+1. Connect from the left-side menu.
+2. Initialize the MCP session.
+3. Open the tool list and inspect the available tools.
+
+This sequence should be used before validating behavior in `get_help`, `project_overview`, or
+`read_file_excerpt`.
+<!-- END INSPECTOR-WORKFLOW -->

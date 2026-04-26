@@ -9,7 +9,6 @@ Sessions:
 - SEMANTIC-SEARCH: Embedding model requirements, similarity thresholds, fallback strategy.
 - TOKEN-BUDGET: Concrete soft/hard caps per content type with overflow strategies.
 - CACHING-STRATEGY: What to cache, TTLs, invalidation rules.
-- INSPECTOR-WORKFLOW: How to start the FastMCP Inspector and inspect the server tools.
 -->
 
 # MCP Tool Design Guidelines for AI Agents
@@ -29,8 +28,6 @@ use correctly.
 * [Token Budget Thresholds](#token-budget-thresholds)
 * [Caching for Token Efficiency](#caching-for-token-efficiency)
 * [Token Economy Examples](#token-economy-examples)
-* [Inspector Workflow](#inspector-workflow)
-
 ---
 
 <!-- START CORE-PHILOSOPHY -->
@@ -284,8 +281,9 @@ the scope of the next request.
 <!-- START CACHING-STRATEGY -->
 ## Caching for Token Efficiency
 
-Caching is a planned first-class feature. The target architecture caches project tree snapshots, file summaries, and
-semantic indexes to avoid paying the same token cost twice.
+The table below separates implemented caching from planned caching. Only `get_help()` payload
+caching (server lifetime TTL) is active in the current runtime. All other entries describe the
+target architecture and are not yet implemented.
 
 ### What to Cache
 
@@ -339,54 +337,3 @@ semantic indexes to avoid paying the same token cost twice.
   load only the tool details needed for the current request.
 <!-- END TOKEN-ECONOMY-EXAMPLES -->
 
----
-
-<!-- START INSPECTOR-WORKFLOW -->
-## Inspector Workflow
-
-Use the FastMCP Inspector to validate the current server runtime and inspect the tools exposed by
-`src/server/main.py`.
-
-### Start the Inspector
-
-Run the following command from the repository root:
-
-```bash
-uv run fastmcp dev inspector src/server/main.py
-```
-
-This starts the local Inspector flow for the FastMCP application defined in `src/server/main.py`.
-
-### Connect to the Server
-
-After the Inspector UI opens:
-
-* Use the left-side menu and open **Connect**.
-* Confirm that the target points to the server loaded from `src/server/main.py`.
-* Start the connection so the Inspector can attach to the local FastMCP server runtime.
-
-### Initialize the Session
-
-Once connected:
-
-* Trigger **Initialize** from the Inspector flow.
-* Wait for the MCP session to complete initialization successfully.
-* Confirm that the server metadata is returned without protocol errors before testing tools.
-
-### Inspect the Tools
-
-After initialization:
-
-* Open the tools list in the Inspector.
-* Review the registered tools exposed by the current runtime.
-* Verify the tool names, descriptions, and input schemas before sending any test calls.
-
-For this project, the expected flow is:
-
-1. Connect from the left-side menu.
-2. Initialize the MCP session.
-3. Open the tool list and inspect the available tools.
-
-This sequence should be used before validating behavior in `get_help`, `project_overview`, or
-`read_file_excerpt`.
-<!-- END INSPECTOR-WORKFLOW -->

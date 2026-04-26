@@ -62,13 +62,9 @@ FastMCP's native `instructions` field. Richer runtime guidance remains available
 
 ### 2.2 The get_help Tool
 
-A dedicated `get_help` tool is exposed to provide runtime-aware documentation without introducing a separate
-runtime registry.
-
-* **get_help()** (no arguments): Returns the `get_help` runtime document plus the current live tool list.
-* **get_help(topic="standards")**: Returns the Universal Response Payload contract.
-* **get_help(topic="[Tool Name]")**: Returns details for a registered tool using runtime metadata when available,
-  plus project-specific implementation-status notes.
+A dedicated `get_help` tool provides runtime-aware documentation without introducing a separate
+registry. It reads markdown files from `src/server/docs/` to serve tool help on demand,
+keeping documentation co-located with the code and eliminating drift between docs and runtime.
 <!-- END INITIALIZATION-DISCOVERY -->
 
 ---

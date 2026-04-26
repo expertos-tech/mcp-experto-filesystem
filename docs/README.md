@@ -25,7 +25,7 @@ Sessions:
 | **[development-standards.md](./development-standards.md)** | Python engineering standards: code style, error taxonomy, testing, dependency management, and CI/CD. | Writing or reviewing any Python code in this repository. |
 | **[markdown-standards.md](./markdown-standards.md)** | Mandatory formatting and structure rules for all Markdown files. | Creating or editing any `.md` file. |
 | **[mcp-design-guidelines.md](./mcp-design-guidelines.md)** | Principles for MCP tool design: token economy, safety, semantic search, and caching strategy. | Designing the behavior or UX of any MCP tool exposed to agents. |
-| **[../tmp/code-review.md](../tmp/code-review.md)** | Deep technical review of the FastMCP migration and POC tool implementation. | Evaluating the quality and architecture of recent server changes. |
+| **[code-review.md](./code-review.md)** | Deep technical review of the FastMCP migration and POC tool implementation. | Evaluating the quality and architecture of recent server changes. |
 <!-- END DOCUMENTATION-MAP -->
 
 ---
