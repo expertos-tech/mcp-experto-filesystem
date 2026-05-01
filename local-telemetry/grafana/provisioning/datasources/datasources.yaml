@@ -1,0 +1,38 @@
+apiVersion: 1
+
+datasources:
+  - name: Prometheus Local
+    uid: prometheus-local
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+
+  - name: Loki Local
+    uid: loki-local
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    editable: false
+
+  - name: Tempo Local
+    uid: tempo-local
+    type: tempo
+    access: proxy
+    url: http://tempo:3200
+    editable: false
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: loki-local
+        spanStartTimeShift: -30m
+        spanEndTimeShift: 30m
+        tags:
+          - key: service.name
+            value: service_name
+      serviceMap:
+        datasourceUid: prometheus-local
+      search:
+        hide: false
+      nodeGraph:
+        enabled: true
