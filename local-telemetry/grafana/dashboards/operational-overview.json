@@ -471,7 +471,7 @@
             "type": "loki",
             "uid": "loki-local"
           },
-          "expr": "{}",
+          "expr": "{job=~\".+\"}",
           "queryType": "range",
           "refId": "A"
         }

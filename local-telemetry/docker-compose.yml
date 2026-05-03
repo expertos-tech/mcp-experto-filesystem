@@ -35,6 +35,8 @@ services:
     user: "0:0"
     command: ["-config.file=/etc/loki/loki.yaml"]
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:3100:3100"
     volumes:
       - ./loki/loki.yaml:/etc/loki/loki.yaml:ro
       - ./data/loki:/loki
@@ -44,6 +46,8 @@ services:
     user: "0:0"
     command: ["-config.file=/etc/tempo/tempo.yaml"]
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:3200:3200"
     volumes:
       - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml:ro
       - ./data/tempo:/var/tempo
