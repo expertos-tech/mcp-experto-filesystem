@@ -1,0 +1,516 @@
+:root {
+  --theme-color: #0f766e;
+  --theme-color-secondary: #f59e0b;
+  --base-background-color: #f4efe5;
+  --base-color: #172033;
+  --base-font-family: "IBM Plex Sans", sans-serif;
+  --heading-font-family: "Space Grotesk", sans-serif;
+  --mono-font-family: "IBM Plex Mono", monospace;
+  --content-max-width: 960px;
+  --sidebar-width: 22rem;
+  --code-inline-background: rgba(15, 118, 110, 0.1);
+  --code-inline-color: #0f766e;
+  --blockquote-border-color: #f59e0b;
+  --selection-color: rgba(245, 158, 11, 0.18);
+}
+
+[data-theme="dark"] {
+  --theme-color: #5eead4;
+  --theme-color-secondary: #fbbf24;
+  --base-background-color: #0b1220;
+  --base-color: #d6deeb;
+  --code-inline-background: rgba(94, 234, 212, 0.12);
+  --code-inline-color: #7ef3e3;
+  --blockquote-border-color: #fbbf24;
+  --selection-color: rgba(94, 234, 212, 0.2);
+
+  --sidebar-toggle-background: rgba(15, 23, 42, 0.92);
+  --sidebar-toggle-icon-color: #e2e8f0;
+
+  --search-input-background-color: rgba(15, 23, 42, 0.92);
+  --search-input-color: #e2e8f0;
+  --search-input-border-color: rgba(148, 163, 184, 0.18);
+  --search-input-placeholder-color: rgba(226, 232, 240, 0.55);
+  --search-result-heading-color: #f8fafc;
+  --search-result-item-color: rgba(226, 232, 240, 0.85);
+  --search-result-item-background-color--selected: rgba(94, 234, 212, 0.12);
+  --search-result-keyword-background-color: rgba(94, 234, 212, 0.18);
+  --search-result-keyword-color: #7ef3e3;
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at top right, rgba(245, 158, 11, 0.18), transparent 22rem),
+    radial-gradient(circle at left 10%, rgba(15, 118, 110, 0.12), transparent 24rem),
+    #f4efe5;
+  color: #172033;
+  font-family: "IBM Plex Sans", sans-serif;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+}
+
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(circle at top right, rgba(251, 191, 36, 0.12), transparent 22rem),
+    radial-gradient(circle at left 10%, rgba(94, 234, 212, 0.1), transparent 24rem),
+    #0b1220;
+  color: #d6deeb;
+}
+
+.sidebar {
+  background: rgba(255, 251, 246, 0.92);
+  border-right: 1px solid rgba(23, 32, 51, 0.07);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.35);
+}
+
+[data-theme="dark"] .sidebar {
+  background: rgba(11, 18, 32, 0.92);
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
+}
+
+.sidebar-nav {
+  font-size: 0.97rem;
+  padding: 0 0.85rem 2rem 1.1rem;
+}
+
+.sidebar-nav > ul > li {
+  margin: 1rem 0 1.2rem;
+}
+
+.sidebar-nav > ul > li > p,
+.sidebar-nav > ul > li > a {
+  color: #172033;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .sidebar-nav > ul > li > p,
+[data-theme="dark"] .sidebar-nav > ul > li > a,
+[data-theme="dark"] .app-name-link {
+  color: #f8fafc;
+}
+
+.sidebar-nav li.collapse > .app-sub-sidebar,
+.sidebar-nav li > .app-sub-sidebar {
+  margin-top: 0.55rem;
+}
+
+.sidebar-nav li ul li a {
+  border-radius: 0.85rem;
+  color: rgba(23, 32, 51, 0.86);
+  padding: 0.45rem 0.7rem;
+}
+
+[data-theme="dark"] .sidebar-nav li ul li a {
+  color: rgba(226, 232, 240, 0.8);
+}
+
+.sidebar-nav li ul li.active > a,
+.sidebar-nav li ul li a:hover {
+  background: rgba(15, 118, 110, 0.1);
+  color: #0f766e;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.app-name {
+  border-bottom: 1px solid rgba(23, 32, 51, 0.07);
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  padding: 1.3rem 1.35rem 1rem;
+}
+
+.app-name-link {
+  color: #172033;
+}
+
+[data-theme="dark"] .app-name {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.search {
+  margin: 1rem 1rem 1.25rem;
+  padding: 0;
+}
+
+.search input {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(23, 32, 51, 0.1);
+  border-radius: 999px;
+  box-shadow: 0 14px 32px rgba(23, 32, 51, 0.07);
+  color: #172033;
+  font-size: 0.97rem;
+  padding: 0.8rem 1rem 0.8rem 2.7rem;
+}
+
+[data-theme="dark"] .search input {
+  background: rgba(15, 23, 42, 0.92);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 14px 32px rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+}
+
+.search input:focus {
+  border-color: rgba(15, 118, 110, 0.45);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+}
+
+.search .input-wrap {
+  position: relative;
+}
+
+.search .input-wrap::before {
+  color: rgba(23, 32, 51, 0.45);
+  content: "⌕";
+  font-size: 1rem;
+  left: 1rem;
+  position: absolute;
+  top: 0.75rem;
+}
+
+[data-theme="dark"] .search .input-wrap::before {
+  color: rgba(226, 232, 240, 0.45);
+}
+
+.search .results-panel {
+  background: rgba(255, 251, 246, 0.98);
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 20px 48px rgba(23, 32, 51, 0.12);
+  margin-top: 0.7rem;
+  padding: 0.4rem;
+}
+
+[data-theme="dark"] .search .results-panel {
+  background: rgba(11, 18, 32, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 20px 48px rgba(2, 6, 23, 0.4);
+}
+
+.markdown-section {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  padding: 2.5rem 3rem 5rem;
+}
+
+.markdown-section > h1,
+.markdown-section > h2,
+.markdown-section > h3,
+.markdown-section > h4 {
+  color: #101828;
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.03em;
+}
+
+[data-theme="dark"] .markdown-section > h1,
+[data-theme="dark"] .markdown-section > h2,
+[data-theme="dark"] .markdown-section > h3,
+[data-theme="dark"] .markdown-section > h4,
+[data-theme="dark"] .markdown-section strong {
+  color: #f8fafc;
+}
+
+.markdown-section h1 {
+  font-size: 2.6rem;
+  margin-bottom: 1.1rem;
+}
+
+.markdown-section h2 {
+  border-bottom: 1px solid rgba(23, 32, 51, 0.08);
+  font-size: 1.6rem;
+  margin-top: 2.6rem;
+  padding-bottom: 0.45rem;
+}
+
+.markdown-section strong {
+  color: #101828;
+}
+
+[data-theme="dark"] .markdown-section {
+  color: #d6deeb;
+}
+
+.markdown-section a {
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.16em;
+}
+
+[data-theme="dark"] .markdown-section a {
+  color: #7ef3e3;
+}
+
+.markdown-section blockquote {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0 1rem 1rem 0;
+  padding: 0.9rem 1rem;
+}
+
+[data-theme="dark"] .markdown-section blockquote {
+  background: rgba(15, 23, 42, 0.78);
+}
+
+.markdown-section code,
+.markdown-section pre,
+.markdown-section pre code {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.markdown-section code {
+  border-radius: 0.45rem;
+  font-size: 0.92em;
+  padding: 0.18rem 0.4rem;
+}
+
+.markdown-section pre {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.1rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+  padding: 1rem;
+}
+
+.markdown-section pre > code {
+  background: transparent;
+  color: #e8eef9;
+}
+
+[data-theme="dark"] .markdown-section h2 {
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.markdown-section table {
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-collapse: separate;
+  border-radius: 1rem;
+  border-spacing: 0;
+  box-shadow: 0 14px 32px rgba(23, 32, 51, 0.08);
+  overflow: hidden;
+}
+
+.markdown-section thead {
+  background: rgba(15, 118, 110, 0.08);
+}
+
+.markdown-section th,
+.markdown-section td {
+  border-bottom: 1px solid rgba(23, 32, 51, 0.08);
+  border-right: 1px solid rgba(23, 32, 51, 0.06);
+}
+
+.markdown-section th {
+  color: #101828;
+  font-weight: 700;
+}
+
+.markdown-section tr:last-child td {
+  border-bottom: 0;
+}
+
+.markdown-section th:last-child,
+.markdown-section td:last-child {
+  border-right: 0;
+}
+
+[data-theme="dark"] .markdown-section table {
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 18px 42px rgba(2, 6, 23, 0.32);
+}
+
+[data-theme="dark"] .markdown-section thead {
+  background: rgba(94, 234, 212, 0.1);
+}
+
+[data-theme="dark"] .markdown-section tbody,
+[data-theme="dark"] .markdown-section tbody tr {
+  background: rgba(15, 23, 42, 0.82);
+}
+
+[data-theme="dark"] .markdown-section th,
+[data-theme="dark"] .markdown-section td {
+  background: transparent;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  border-right: 1px solid rgba(148, 163, 184, 0.1);
+  color: #d6deeb;
+}
+
+[data-theme="dark"] .markdown-section th {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .markdown-section tbody td {
+  background: rgba(15, 23, 42, 0.82) !important;
+}
+
+[data-theme="dark"] .markdown-section tbody tr:nth-child(2n) td {
+  background: rgba(148, 163, 184, 0.04);
+}
+
+.docsify-copy-code-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: #f8fafc;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  margin: 0.75rem;
+  padding: 0.35rem 0.7rem;
+}
+
+.docsify-copy-code-button:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.markdown-section img {
+  border-radius: 1rem;
+  box-shadow: 0 20px 48px rgba(23, 32, 51, 0.14);
+}
+
+.pagination-item {
+  margin-top: 2rem;
+}
+
+.pagination-item a,
+.pagination-item span {
+  border-radius: 1rem;
+  padding: 1rem 1.15rem;
+}
+
+.mermaid {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 18px 42px rgba(23, 32, 51, 0.08);
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+[data-theme="dark"] .mermaid {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 18px 42px rgba(2, 6, 23, 0.35);
+}
+
+.theme-toggle {
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 251, 246, 0.88);
+  border: 1px solid rgba(23, 32, 51, 0.08);
+  border-radius: 999px;
+  bottom: 1.2rem;
+  box-shadow: 0 16px 40px rgba(23, 32, 51, 0.12);
+  color: #172033;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: "IBM Plex Sans", sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  position: fixed;
+  right: 1.2rem;
+  transition: transform 160ms ease, background-color 160ms ease, color 160ms ease;
+  z-index: 30;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.theme-toggle__sun,
+.theme-toggle__moon {
+  border-radius: 999px;
+  opacity: 0.58;
+  padding: 0.18rem 0.45rem;
+  transition: background-color 160ms ease, color 160ms ease, opacity 160ms ease;
+}
+
+[data-theme="light"] .theme-toggle__sun,
+[data-theme="dark"] .theme-toggle__moon {
+  background: rgba(15, 118, 110, 0.12);
+  color: var(--theme-color);
+  opacity: 1;
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: 0 16px 40px rgba(2, 6, 23, 0.35);
+  color: #e2e8f0;
+}
+
+.sidebar-nav .app-sub-sidebar li::before,
+.sidebar-nav .app-sub-sidebar li::after,
+.sidebar-nav li::before,
+.sidebar-nav li::after {
+  color: currentColor;
+}
+
+[data-theme="dark"] .sidebar-nav .app-sub-sidebar li::before,
+[data-theme="dark"] .sidebar-nav .app-sub-sidebar li::after,
+[data-theme="dark"] .sidebar-nav li::before,
+[data-theme="dark"] .sidebar-nav li::after {
+  border-color: rgba(226, 232, 240, 0.72);
+  color: rgba(226, 232, 240, 0.88);
+}
+
+.sidebar svg,
+.markdown-section svg,
+.search svg,
+.theme-toggle svg,
+button svg,
+.markdown-section a svg,
+.sidebar a svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.github-corner svg {
+  fill: #151513;
+  color: #fff;
+}
+
+[data-theme="dark"] .github-corner svg {
+  fill: #e2e8f0;
+  color: #0b1220;
+}
+
+[data-theme="dark"] .sidebar svg,
+[data-theme="dark"] .markdown-section svg,
+[data-theme="dark"] .search svg,
+[data-theme="dark"] .theme-toggle svg,
+[data-theme="dark"] button svg,
+[data-theme="dark"] .markdown-section a svg,
+[data-theme="dark"] .sidebar a svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+@media (max-width: 960px) {
+  .markdown-section {
+    padding: 1.7rem 1.3rem 4rem;
+  }
+}

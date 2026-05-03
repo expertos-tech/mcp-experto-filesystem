@@ -1,4 +1,5 @@
-* [Docs Home](/)
+* [Home](/)
 * [Architecture](architecture.md)
-* [Development Standards](development-standards.md)
-* [MCP Design Guidelines](mcp-design-guidelines.md)
+* [Standards](development-standards.md)
+* [Platform](mcp-design-guidelines.md)
+* [Docs Experience](docsify-enhancements.md)
