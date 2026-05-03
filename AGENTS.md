@@ -67,7 +67,7 @@ Your role transitions between a strategic advisor and a surgical engineer implem
 <!-- START MANDATORY-READING -->
 ## 2. Mandatory Reading
 Before making any changes, you MUST read the following:
-* **[Technical Documentation Index](./docs/README.md):** Comprehensive guide on architecture and standards.  
+* **[Technical Documentation Index](./references/README.md):** Comprehensive guide on architecture and standards.  
 <!-- END MANDATORY-READING -->
 
 ---
