@@ -69,7 +69,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum(otelcol_receiver_accepted_spans)",
+          "expr": "sum(otelcol_receiver_accepted_spans_total)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -126,7 +126,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum(otelcol_receiver_accepted_log_records)",
+          "expr": "sum(otelcol_receiver_accepted_log_records_total)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -183,7 +183,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum(otelcol_receiver_accepted_metric_points)",
+          "expr": "sum(otelcol_receiver_accepted_metric_points_total)",
           "legendFormat": "",
           "range": true,
           "refId": "A"
@@ -325,21 +325,21 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "sum by (receiver) (rate(otelcol_receiver_accepted_spans[5m]))",
+          "expr": "sum by (receiver) (rate(otelcol_receiver_accepted_spans_total[5m]))",
           "legendFormat": "{{receiver}} spans/s",
           "range": true,
           "refId": "A"
         },
         {
           "editorMode": "code",
-          "expr": "sum by (receiver) (rate(otelcol_receiver_accepted_log_records[5m]))",
+          "expr": "sum by (receiver) (rate(otelcol_receiver_accepted_log_records_total[5m]))",
           "legendFormat": "{{receiver}} logs/s",
           "range": true,
           "refId": "B"
         },
         {
           "editorMode": "code",
-          "expr": "sum by (receiver) (rate(otelcol_receiver_accepted_metric_points[5m]))",
+          "expr": "sum by (receiver) (rate(otelcol_receiver_accepted_metric_points_total[5m]))",
           "legendFormat": "{{receiver}} metric points/s",
           "range": true,
           "refId": "C"
@@ -427,14 +427,14 @@
         },
         {
           "editorMode": "code",
-          "expr": "sum by (exporter) (rate(otelcol_exporter_send_failed_spans[5m]))",
+          "expr": "sum by (exporter) (rate(otelcol_exporter_send_failed_spans_total[5m]))",
           "legendFormat": "{{exporter}} failed spans/s",
           "range": true,
           "refId": "B"
         },
         {
           "editorMode": "code",
-          "expr": "sum by (exporter) (rate(otelcol_exporter_send_failed_log_records[5m]))",
+          "expr": "sum by (exporter) (rate(otelcol_exporter_send_failed_log_records_total[5m]))",
           "legendFormat": "{{exporter}} failed logs/s",
           "range": true,
           "refId": "C"
@@ -516,17 +516,9 @@
             "type": "tempo",
             "uid": "tempo-local"
           },
-          "filters": [
-            {
-              "id": "resource.service.name",
-              "operator": "=",
-              "scope": "resource",
-              "tag": "service.name",
-              "value": ""
-            }
-          ],
+          "filters": [],
           "limit": 20,
-          "query": "",
+          "query": "{}",
           "queryType": "search",
           "refId": "A"
         }

@@ -152,6 +152,33 @@ export OTEL_SERVICE_NAME=mcp-experto-filesystem
 export OTEL_RESOURCE_ATTRIBUTES=deployment.environment.name=local,service.namespace=expertostech
 ```
 
+For multiple local CLIs, keep common OTEL variables global and set `OTEL_SERVICE_NAME`
+per command through wrappers in `~/.local/bin`:
+
+```bash
+otel-copilot
+otel-gemini
+otel-codex
+otel-claude
+```
+
+Each wrapper should export a CLI-specific service name before launching the command:
+
+```bash
+#!/usr/bin/env sh
+set -eu
+
+export OTEL_EXPORTER_OTLP_ENDPOINT="${OTEL_EXPORTER_OTLP_ENDPOINT:-http://127.0.0.1:4318}"
+export OTEL_EXPORTER_OTLP_PROTOCOL="${OTEL_EXPORTER_OTLP_PROTOCOL:-http/protobuf}"
+export OTEL_RESOURCE_ATTRIBUTES="${OTEL_RESOURCE_ATTRIBUTES:-deployment.environment.name=local,service.namespace=expertostech}"
+export OTEL_SERVICE_NAME="codex-cli"
+
+exec codex "$@"
+```
+
+Use distinct values such as `copilot-cli`, `gemini-cli`, `codex-cli`, and `claude-cli`
+to separate signals in Grafana and Tempo.
+
 Useful resource and semantic attributes:
 
 * `service.name`
