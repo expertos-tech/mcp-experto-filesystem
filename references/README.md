@@ -36,6 +36,7 @@ Sessions:
 | **[local-telemetry-operations.md](./local-telemetry-operations.md)** | Operational guide for the local telemetry stack that observes the MCP, the host CLI, and model usage signals when emitted. | Running, troubleshooting, or extending the local observability stack under `local-telemetry/`. |
 | **[development-standards.md](./development-standards.md)** | Python engineering standards: code style, error taxonomy, testing, dependency management, and CI/CD. | Writing or reviewing any Python code in this repository. |
 | **[markdown-standards.md](./markdown-standards.md)** | Mandatory formatting and structure rules for all Markdown files. | Creating or editing any `.md` file. |
+| **[docsify-standards.md](./docsify-standards.md)** | Repository-specific Docsify instructions for site structure, navigation, plugins, and validation. | Editing the `docs/` site shell, navigation, or published Markdown pages. |
 | **[mcp-design-guidelines.md](./mcp-design-guidelines.md)** | Principles for MCP tool design: token economy, safety, semantic search, and caching strategy. | Designing the behavior or UX of any MCP tool exposed to agents. |
 | **[code-review.md](./code-review.md)** | Deep technical review of the FastMCP migration and POC tool implementation. | Evaluating the quality and architecture of recent server changes. |
 <!-- END DOCUMENTATION-MAP -->
@@ -67,6 +68,8 @@ They are distinct from the technical docs above and must be read before any othe
   for startup, persistence, OTLP wiring, and troubleshooting.
 * **Writing documentation:** Follow [Markdown Standards](./markdown-standards.md) before
   creating or editing any `.md` file.
+* **Maintaining the Docsify site:** Read [Docsify Standards](./docsify-standards.md) before
+  changing `docs/index.html`, `docs/_sidebar.md`, or published docs pages.
 * **AI agents:** Read [AGENTS.md](https://github.com/expertos-tech/mcp-experto-filesystem/blob/main/AGENTS.md)
   or [CLAUDE.md](https://github.com/expertos-tech/mcp-experto-filesystem/blob/main/CLAUDE.md) first,
   then use this index to navigate to the relevant technical reference.
