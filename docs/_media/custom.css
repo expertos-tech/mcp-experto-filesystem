@@ -28,6 +28,7 @@
   --sidebar-toggle-icon-color: #e2e8f0;
 
   --search-input-background-color: rgba(15, 23, 42, 0.92);
+  --search-input-background-image: url("data:image/svg+xml,%3Csvg height='20px' width='20px' viewBox='0 0 24 24' fill='none' stroke='rgba(226, 232, 240, 0.55)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' preserveAspectRatio='xMidYMid meet' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10.5' cy='10.5' r='7.5' vector-effect='non-scaling-stroke'%3E%3C/circle%3E%3Cline x1='21' y1='21' x2='15.8' y2='15.8' vector-effect='non-scaling-stroke'%3E%3C/line%3E%3C/svg%3E");
   --search-input-color: #e2e8f0;
   --search-input-border-color: rgba(148, 163, 184, 0.18);
   --search-input-placeholder-color: rgba(226, 232, 240, 0.55);
@@ -168,13 +169,32 @@ html[data-theme="dark"] body {
   border-bottom: 1px solid rgba(148, 163, 184, 0.12);
 }
 
+.sidebar-brand-art {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 1rem 0.4rem;
+  padding: 0.25rem 0 0.15rem;
+}
+
+.sidebar-brand-art img {
+  display: block;
+  filter: drop-shadow(0 10px 22px rgba(15, 118, 110, 0.18));
+  height: auto;
+  max-width: 168px;
+  width: 100%;
+}
+
+[data-theme="dark"] .sidebar-brand-art img {
+  filter: drop-shadow(0 14px 28px rgba(94, 234, 212, 0.16));
+}
+
 .search {
   margin: 1rem 1rem 1.25rem;
   padding: 0;
 }
 
 .search input {
-  background: rgba(255, 255, 255, 0.88);
+  background-color: rgba(255, 255, 255, 0.88);
   border: 1px solid rgba(23, 32, 51, 0.1);
   border-radius: 999px;
   box-shadow: 0 14px 32px rgba(23, 32, 51, 0.07);
@@ -184,7 +204,7 @@ html[data-theme="dark"] body {
 }
 
 [data-theme="dark"] .search input {
-  background: rgba(15, 23, 42, 0.92);
+  background-color: rgba(15, 23, 42, 0.92);
   border: 1px solid rgba(148, 163, 184, 0.18);
   box-shadow: 0 14px 32px rgba(2, 6, 23, 0.35);
   color: #e2e8f0;
@@ -197,19 +217,6 @@ html[data-theme="dark"] body {
 
 .search .input-wrap {
   position: relative;
-}
-
-.search .input-wrap::before {
-  color: rgba(23, 32, 51, 0.45);
-  content: "⌕";
-  font-size: 1rem;
-  left: 1rem;
-  position: absolute;
-  top: 0.75rem;
-}
-
-[data-theme="dark"] .search .input-wrap::before {
-  color: rgba(226, 232, 240, 0.45);
 }
 
 .search .results-panel {

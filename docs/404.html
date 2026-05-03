@@ -66,8 +66,37 @@
       document.documentElement.setAttribute("data-theme", theme);
     })();
 
+    function ensureSidebarBrand() {
+      const sidebar = document.querySelector(".sidebar");
+      const search = sidebar && sidebar.querySelector(".search");
+
+      if (!sidebar || !search) {
+        return false;
+      }
+
+      if (!sidebar.querySelector(".sidebar-brand-art")) {
+        const brand = document.createElement("div");
+        brand.className = "sidebar-brand-art";
+        brand.innerHTML =
+          '<img src="_media/images/logo-480.png" alt="MCP Experto Filesystem logo">';
+        sidebar.insertBefore(brand, search);
+      }
+
+      return true;
+    }
+
+    function mountSidebarBrand(retries) {
+      if (ensureSidebarBrand() || retries <= 0) {
+        return;
+      }
+
+      window.setTimeout(function () {
+        mountSidebarBrand(retries - 1);
+      }, 120);
+    }
+
     window.$docsify = {
-      name: "mcp-experto-filesystem",
+      name: "",
       repo: "https://github.com/expertos-tech/mcp-experto-filesystem",
       homepage: "README.md",
       loadSidebar: true,
@@ -107,7 +136,18 @@
       },
       mermaidConfig: {
         querySelector: ".mermaid"
-      }
+      },
+      plugins: [
+        function (hook) {
+          hook.mounted(function () {
+            mountSidebarBrand(20);
+          });
+
+          hook.doneEach(function () {
+            mountSidebarBrand(20);
+          });
+        }
+      ]
     };
   </script>
   <script src="https://cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
