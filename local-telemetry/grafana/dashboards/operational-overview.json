@@ -450,9 +450,9 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
+        "w": 24,
         "x": 0,
-        "y": 12
+        "y": 21
       },
       "id": 7,
       "options": {
@@ -502,8 +502,8 @@
       },
       "gridPos": {
         "h": 9,
-        "w": 12,
-        "x": 12,
+        "w": 24,
+        "x": 0,
         "y": 12
       },
       "id": 8,
@@ -516,11 +516,11 @@
             "type": "tempo",
             "uid": "tempo-local"
           },
-          "filters": [],
           "limit": 20,
           "query": "{}",
-          "queryType": "search",
-          "refId": "A"
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
         }
       ],
       "title": "Recent Traces",
@@ -535,7 +535,7 @@
         "h": 6,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 30
       },
       "id": 9,
       "options": {

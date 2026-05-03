@@ -4,7 +4,7 @@ Follow these steps to set up the MCP Experto Filesystem server on your machine.
 
 ## Prerequisites
 
-- **Python:** 3.12 or higher.
+- **Python:** 3.11 or higher.
 - **System:** Linux (preferred) or macOS.
 - **Docker:** Required for local telemetry features.
 
@@ -13,7 +13,7 @@ Follow these steps to set up the MCP Experto Filesystem server on your machine.
 The project includes an installation script to automate the setup process:
 
 ```bash
-bash install/install-mcp-experto-filesystem.sh
+bash install/mcp-experto-filesystem-install.sh
 ```
 
 ## Manual Installation

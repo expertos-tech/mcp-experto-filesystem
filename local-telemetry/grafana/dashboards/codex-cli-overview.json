@@ -123,9 +123,9 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 12,
+        "w": 24,
         "x": 0,
-        "y": 4
+        "y": 14
       },
       "id": 3,
       "options": {
@@ -159,8 +159,8 @@
       },
       "gridPos": {
         "h": 10,
-        "w": 12,
-        "x": 12,
+        "w": 24,
+        "x": 0,
         "y": 4
       },
       "id": 4,
@@ -173,11 +173,11 @@
             "type": "tempo",
             "uid": "tempo-local"
           },
-          "filters": [],
           "limit": 20,
           "query": "{resource.service.name=\"codex-cli\"}",
-          "queryType": "search",
-          "refId": "A"
+          "queryType": "traceql",
+          "refId": "A",
+          "tableType": "traces"
         }
       ],
       "title": "Recent Traces",
