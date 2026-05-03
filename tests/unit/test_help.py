@@ -47,7 +47,7 @@ async def test_get_help_specific_tool_returns_doc(mocker):
     assert response["status"] == 200
     assert response["data"]["tool"] == "project_overview"
     assert response["data"]["documentation"] == "# project_overview"
-    assert response["data"]["implementation_status"] == "poc_placeholder"
+    assert response["data"]["implementation_status"] == "implemented"
 
 
 @pytest.mark.asyncio

@@ -113,9 +113,12 @@ Treat `status >= 400` as an application-level failure and inspect `error` for de
 Current tool guidance:
 
 * `get_help` is implemented.
-* `project_overview` is currently a `poc_placeholder`.
-* `read_file_excerpt` is currently a `poc_placeholder`.
-
-POC placeholders intentionally avoid fabricated filesystem content. They report current status
-until the underlying implementation is delivered.
+* `project_overview` maps the workspace structure.
+* `read_file_excerpt` reads bounded content from text-like files.
+* `read_document_excerpt` reads bounded content from `pdf`, `docx`, and `pptx`.
+* `index_workspace` builds the local retrieval index.
+* `search_files` queries indexed content with keyword, semantic, or hybrid ranking.
+* `find_similar_content` finds nearby semantic matches for a file or excerpt.
+* `index_status` reports local index and watcher health.
+* `index_errors` reports recent extraction and indexing failures.
 <!-- END TOOL-STATUS -->

@@ -26,9 +26,9 @@ Sessions:
 <!-- START TLDR -->
 ## TL;DR
 
-* `read_file_excerpt` is currently a placeholder runtime help document, not a real file reader.
-* It echoes the requested path and line range instead of reading repository content.
-* Use this doc to understand the current input contract and placeholder response shape.
+* `read_file_excerpt` reads a bounded line range from a text-like file in the workspace.
+* It validates the relative path, blocks traversal, and truncates oversized excerpts.
+* Use it for code, markdown, config, and other known text formats.
 <!-- END TLDR -->
 
 ---
@@ -36,10 +36,11 @@ Sessions:
 <!-- START OVERVIEW -->
 ## Overview
 
-Reports the current placeholder state for a future line-range file reader. It does not read files
-yet and instead echoes the requested path and line range.
+Reads a bounded excerpt from a text-like file inside the configured project root. The tool supports
+markdown, source code, configs, and other known text formats, while rejecting binary and document
+formats that require `read_document_excerpt`.
 
-**Status:** `poc_placeholder`
+**Status:** `implemented`
 <!-- END OVERVIEW -->
 
 ---
@@ -51,9 +52,10 @@ yet and instead echoes the requested path and line range.
 
 | Parameter | Type | Required | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `path` | `str` | Yes | - | Echoed back in the placeholder response |
-| `start_line` | `int` | No | `1` | First requested line in the placeholder response |
-| `end_line` | `int` | No | `50` | Last requested line in the placeholder response |
+| `path` | `str` | Yes | - | Project-relative file path |
+| `start_line` | `int` | No | `1` | First line to include |
+| `end_line` | `int` | No | `50` | Last line to include |
+| `max_chars` | `int` | No | `8000` | Maximum characters returned in the excerpt |
 
 ### Detailed Description
 
@@ -63,8 +65,8 @@ yet and instead echoes the requested path and line range.
 **Required:** Yes  
 **Default:** -
 
-The current placeholder stores the raw value in `data["path"]`. No file access or path validation
-is implemented yet.
+Must be a project-relative path inside the configured workspace root. Absolute paths and traversal
+attempts are rejected.
 
 #### `start_line`
 
@@ -72,7 +74,7 @@ is implemented yet.
 **Required:** No  
 **Default:** `1`
 
-The current placeholder stores the value in `data["requested_range"]["start_line"]`.
+The first one-based line to return.
 
 #### `end_line`
 
@@ -80,7 +82,16 @@ The current placeholder stores the value in `data["requested_range"]["start_line
 **Required:** No  
 **Default:** `50`
 
-The current placeholder stores the value in `data["requested_range"]["end_line"]`.
+The last one-based line to return.
+
+#### `max_chars`
+
+**Type:** `int`
+**Required:** No
+**Default:** `8000`
+
+Upper bound for the returned content payload. The tool truncates the excerpt and reports a warning
+when needed.
 <!-- END PARAMETERS -->
 
 ---
@@ -92,15 +103,21 @@ On success (`status 200`), `data` contains:
 
 ```json
 {
-  "summary": "str - Placeholder status summary",
-  "implementation_status": "str - Always poc_placeholder",
-  "path": "str - The value passed by the caller",
+  "summary": "str - High-level read summary",
+  "path": "str - Project-relative file path",
+  "file_kind": "str - text, markdown, code, or config",
+  "encoding": "str - Decoding used for the file",
   "requested_range": {
     "start_line": "int - Requested first line",
     "end_line": "int - Requested last line"
   },
-  "notes": [
-    "str - Explains that file reading is not implemented"
+  "returned_range": {
+    "start_line": "int - Actual first line returned",
+    "end_line": "int - Actual last line returned"
+  },
+  "content": "str - Bounded excerpt content",
+  "warnings": [
+    "str - Truncation or format warnings"
   ]
 }
 ```
@@ -111,8 +128,11 @@ On success (`status 200`), `data` contains:
 <!-- START ERRORS -->
 ## Errors
 
-This placeholder currently defines no tool-specific application errors. Any `status 500` response
-would indicate an internal fault rather than a documented usage error.
+| Error Code | Status | When it occurs |
+| :--- | :--- | :--- |
+| `VALIDATION_ERROR` | 400 | Invalid line range or unsupported text request |
+| `PATH_SECURITY_ERROR` | 403 | The path is absolute or escapes the workspace root |
+| `TOOL_EXECUTION_ERROR` | 500 | The file cannot be decoded or exceeds configured size limits |
 <!-- END ERRORS -->
 
 ---
@@ -131,8 +151,9 @@ read_file_excerpt(path="src/server/tools/help.py", start_line=10, end_line=40)
 <!-- START NOTES -->
 ## Notes
 
-This tool intentionally avoids fabricated file content until real file-reading logic exists.
+For `pdf`, `docx`, and `pptx`, use `read_document_excerpt` instead.
 <!-- END NOTES -->
+
 
 ---
 

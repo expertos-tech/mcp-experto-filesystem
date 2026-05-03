@@ -26,9 +26,9 @@ Sessions:
 <!-- START TLDR -->
 ## TL;DR
 
-* `project_overview` is currently a placeholder runtime help document, not a real repository summarizer.
-* It reports the requested depth and placeholder status instead of traversing the project tree.
-* Use this doc to understand the current input and output contract until the real implementation exists.
+* `project_overview` returns a bounded map of the current workspace.
+* It summarizes the root, visible tree, candidate file counts, and local index location.
+* Use it before deeper reads or indexing when you need orientation without dumping the repo.
 <!-- END TLDR -->
 
 ---
@@ -36,10 +36,11 @@ Sessions:
 <!-- START OVERVIEW -->
 ## Overview
 
-Reports the current placeholder state for a future project tree summary tool. It does not inspect
-the repository yet and instead confirms the requested depth and implementation status.
+Returns a token-efficient project map rooted at the configured workspace. The tool traverses the
+workspace up to the requested depth, skips ignored areas such as `.git/` and `node_modules/`, and
+reports index-related metadata that helps downstream retrieval tools.
 
-**Status:** `poc_placeholder`
+**Status:** `implemented`
 <!-- END OVERVIEW -->
 
 ---
@@ -51,7 +52,7 @@ the repository yet and instead confirms the requested depth and implementation s
 
 | Parameter | Type | Required | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `max_depth` | `int` | No | `3` | Echoed back in the placeholder response |
+| `max_depth` | `int` | No | `3` | Maximum traversal depth for the returned tree |
 
 ### Detailed Description
 
@@ -61,8 +62,8 @@ the repository yet and instead confirms the requested depth and implementation s
 **Required:** No  
 **Default:** `3`
 
-The current placeholder stores the requested value in `data["requested_max_depth"]`. No directory
-traversal or depth validation is implemented yet.
+Controls how deep the returned tree should go. The tool validates the value and only returns a
+bounded structure, not a recursive full dump.
 <!-- END PARAMETERS -->
 
 ---
@@ -74,12 +75,24 @@ On success (`status 200`), `data` contains:
 
 ```json
 {
-  "summary": "str - Placeholder status summary",
-  "implementation_status": "str - Always poc_placeholder",
-  "requested_max_depth": "int - The value passed by the caller",
-  "notes": [
-    "str - Explains that traversal is not implemented"
-  ]
+  "summary": "str - High-level summary of the workspace map",
+  "root": "str - Absolute configured workspace root",
+  "max_depth": "int - Effective traversal depth",
+  "tree": [
+    {
+      "name": "str - File or directory name",
+      "path": "str - Project-relative path",
+      "kind": "str - directory or file",
+      "file_kind": "str | null - Retrieval-oriented file family for files",
+      "children": "list | null - Nested nodes when inside depth budget"
+    }
+  ],
+  "counts": {
+    "indexed_candidate_files": "int - Files that can be indexed",
+    "ignored_entries": "int - Files or directories skipped by default"
+  },
+  "index_location": "str - Local SQLite index path",
+  "watcher_status": "str - running, unavailable, or disabled"
 }
 ```
 <!-- END RETURNS -->
@@ -89,8 +102,11 @@ On success (`status 200`), `data` contains:
 <!-- START ERRORS -->
 ## Errors
 
-This placeholder currently defines no tool-specific application errors. Any `status 500` response
-would indicate an internal fault rather than a documented usage error.
+| Error Code | Status | When it occurs |
+| :--- | :--- | :--- |
+| `VALIDATION_ERROR` | 400 | `max_depth < 1` |
+| `PATH_SECURITY_ERROR` | 403 | An internal traversal path escapes the workspace root |
+| `TOOL_EXECUTION_ERROR` | 500 | The workspace cannot be traversed safely |
 <!-- END ERRORS -->
 
 ---
@@ -109,7 +125,7 @@ project_overview(max_depth=5)
 <!-- START NOTES -->
 ## Notes
 
-This tool intentionally avoids fabricated filesystem output until real traversal logic exists.
+This tool is read-only and skips ignored or noisy areas by default.
 <!-- END NOTES -->
 
 ---

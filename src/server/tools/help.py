@@ -7,7 +7,7 @@ from server.application.services.executor import universal_response
 from server.exceptions import ToolExecutionError, ValidationError
 
 DOCS_DIR = Path(__file__).parent.parent / "docs"
-POC_TOOL_NAMES = {"project_overview", "read_file_excerpt"}
+POC_TOOL_NAMES: set[str] = set()
 
 
 def _load_doc(doc_name: str) -> str:
