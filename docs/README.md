@@ -50,8 +50,8 @@ They are distinct from the technical docs above and must be read before any othe
 
 | File | Purpose |
 | :--- | :--- |
-| **[AGENTS.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/AGENTS.md)** | Canonical agent persona, safety rules, git conventions, and command shortcuts. |
-| **[CLAUDE.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/CLAUDE.md)** | Claude Code-specific overrides and persona settings (mirrors AGENTS.md with adjustments). |
+| **[AGENTS.md](https://github.com/expertos-tech/mcp-experto-filesystem/blob/main/AGENTS.md)** | Canonical agent persona, safety rules, git conventions, and command shortcuts. |
+| **[CLAUDE.md](https://github.com/expertos-tech/mcp-experto-filesystem/blob/main/CLAUDE.md)** | Claude Code-specific overrides and persona settings (mirrors AGENTS.md with adjustments). |
 <!-- END AGENT-RULES -->
 
 ---
@@ -67,7 +67,7 @@ They are distinct from the technical docs above and must be read before any othe
   for startup, persistence, OTLP wiring, and troubleshooting.
 * **Writing documentation:** Follow [Markdown Standards](./markdown-standards.md) before
   creating or editing any `.md` file.
-* **AI agents:** Read [AGENTS.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/AGENTS.md)
-  or [CLAUDE.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/CLAUDE.md) first,
+* **AI agents:** Read [AGENTS.md](https://github.com/expertos-tech/mcp-experto-filesystem/blob/main/AGENTS.md)
+  or [CLAUDE.md](https://github.com/expertos-tech/mcp-experto-filesystem/blob/main/CLAUDE.md) first,
   then use this index to navigate to the relevant technical reference.
 <!-- END USAGE-GUIDE -->

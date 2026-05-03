@@ -124,7 +124,7 @@ operations remain roadmap capabilities and are not implemented yet.
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/expertostech/mcp-experto-filesystem.git
+git clone https://github.com/expertos-tech/mcp-experto-filesystem.git
 cd mcp-experto-filesystem
 
 # 2. Install dependencies (requires Python 3.11+)
