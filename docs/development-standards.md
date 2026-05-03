@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Technical development standards for Python engineering and internal software architecture.
 Sessions:
+- TLDR: Fast summary of the engineering standards.
 - RUNTIME-STANDARDS: Python version, package management (uv), and configuration.
 - DEPENDENCY-MANAGEMENT: uv lock file rules, dependency separation, upgrade workflow.
 - CODE-STYLE: Formatting rules, naming conventions, and inline comment prohibitions.
@@ -46,6 +47,16 @@ token economy guidelines, see [MCP Design Guidelines](./mcp-design-guidelines.md
 * [Definition of Done](#definition-of-done)
 * [Strong Opinions](#strong-opinions)
 * [Inspector Workflow](#inspector-workflow)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* Python work in this repository must be boring, typed, layered, testable, and validated with the standard local quality gates.
+* `uv` is the only package manager, `pyproject.toml` is the configuration center, and public APIs must be documented.
+* Use this document before writing or reviewing any Python code in the project.
+<!-- END TLDR -->
 
 ---
 

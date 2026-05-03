@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Canonical authoring template for runtime tool help markdown files.
 Sessions:
+- TLDR: Fast summary of how to use the template.
 - TEMPLATE-OVERVIEW: Purpose and usage rules for this template.
 - TEMPLATE-BODY: Required markdown structure for each tool help document.
 -->
@@ -11,6 +12,16 @@ Sessions:
 
 * [Template Overview](#template-overview)
 * [Template Body](#template-body)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* This file is the canonical template for runtime tool help documents under `src/server/docs/`.
+* Use it to keep tool docs structurally consistent with the repository markdown standard.
+* The embedded template below must also include a TL;DR section in generated tool docs.
+<!-- END TLDR -->
 
 ---
 
@@ -36,6 +47,7 @@ Rules:
 <!-- AGENTS SUMMARY
 Runtime help document for <tool_name>.
 Sessions:
+- TLDR: Short summary of the tool for quick scanning.
 - OVERVIEW: What the tool does and its current implementation status.
 - PARAMETERS: Input contract and parameter details.
 - RETURNS: Success payload details.
@@ -54,6 +66,16 @@ Sessions:
 * [Errors](#errors)
 * [Examples](#examples)
 * [Notes](#notes)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* One short summary of what the tool does.
+* One short summary of the current implementation status or main constraint.
+* One short summary of when callers should use this tool.
+<!-- END TLDR -->
 
 ---
 

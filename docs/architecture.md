@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Architectural boundaries, communication protocols, and standardized contracts for the MCP server.
 Sessions:
+- TLDR: Fast summary of the architectural contract.
 - PROTOCOL-DISTRIBUTION: Rules for stdio usage and local security.
 - INITIALIZATION-DISCOVERY: How the server handles the initialize hook and self-discovery tools.
 - TOOL-REGISTRATION: How tools are registered, discovered, and exposed via the initialize hook.
@@ -21,6 +22,16 @@ Sessions:
 * [Error Response Schema](#error-response-schema)
 * [Performance SLAs](#performance-slas)
 * [Design Philosophy](#design-philosophy)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* The MCP server is designed for local stdio execution, FastMCP-based tool exposure, and a shared structured response envelope.
+* This document defines the response contract, initialization flow, and performance expectations for the server.
+* Use it whenever you change tool behavior, runtime composition, or payload structure.
+<!-- END TLDR -->
 
 ---
 

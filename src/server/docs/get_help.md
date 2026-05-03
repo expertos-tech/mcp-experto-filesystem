@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Runtime help document for the get_help MCP tool.
 Sessions:
+- TLDR: Fast summary of the help tool behavior.
 - OVERVIEW: What the tool does and its current implementation status.
 - PARAMETERS: Input contract and supported topic values.
 - RETURNS: Success payload details for each mode.
@@ -19,6 +20,16 @@ Sessions:
 * [Errors](#errors)
 * [Examples](#examples)
 * [Notes](#notes)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* `get_help` is the main runtime documentation entrypoint for this MCP server.
+* It returns server help, tool-specific docs, or the shared response standard depending on `topic`.
+* Use it after initialization to inspect live capabilities without relying on guesswork.
+<!-- END TLDR -->
 
 ---
 

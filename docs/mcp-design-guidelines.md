@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Principles for designing MCP tools that are token-efficient, safe, and tailored for AI consumption.
 Sessions:
+- TLDR: Fast summary of the MCP design principles.
 - TOKEN-ECONOMY: Strategies for reducing context waste (summaries, excerpts, dynamic toolsets).
 - SAFE-AUTOMATION: Guardrails for write operations and protected filesystem areas.
 - HIGH-LEVEL-COMMANDS: Designing tools based on intent rather than raw primitives.
@@ -28,6 +29,17 @@ use correctly.
 * [Token Budget Thresholds](#token-budget-thresholds)
 * [Caching for Token Efficiency](#caching-for-token-efficiency)
 * [Token Economy Examples](#token-economy-examples)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* MCP tools in this project must reduce token usage, stay safe by default, and expose clear structured schemas.
+* Prefer high-level, intent-oriented operations over raw filesystem primitives.
+* Use these guidelines whenever you add or revise a tool contract, output format, or retrieval strategy.
+<!-- END TLDR -->
+
 ---
 
 <!-- START CORE-PHILOSOPHY -->
@@ -336,4 +348,3 @@ target architecture and are not yet implemented.
 * **Good:** Use semantic tool discovery when the capability exists, or otherwise use compact runtime help and
   load only the tool details needed for the current request.
 <!-- END TOKEN-ECONOMY-EXAMPLES -->
-

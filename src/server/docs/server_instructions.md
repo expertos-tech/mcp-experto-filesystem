@@ -39,6 +39,7 @@ Consectetur adipiscing elit.
 <!-- AGENTS SUMMARY
 Server onboarding guidance returned through the MCP lifecycle initialize response.
 Sessions:
+- TLDR: Fast onboarding summary for MCP clients.
 - OVERVIEW: Purpose of this server and the intended first-use flow.
 - DISCOVERY: How clients and LLMs should discover and inspect tools.
 - RESPONSE-CONTRACT: How to understand the shared response envelope.
@@ -53,6 +54,16 @@ Sessions:
 * [Discovery](#discovery)
 * [Response Contract](#response-contract)
 * [Tool Status](#tool-status)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* This document is the short onboarding guide returned through the MCP initialize flow.
+* Clients should list tools, then use `get_help()` for deeper runtime guidance instead of guessing capabilities.
+* The server expects compact discovery and structured payload handling through the shared response contract.
+<!-- END TLDR -->
 
 ---
 

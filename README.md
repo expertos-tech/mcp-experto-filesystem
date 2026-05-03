@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 High-level overview of the Expertos Tech Filesystem MCP project for human users and AI agents.  
 Sessions:
+- TLDR: Fast project summary for new readers.
 - PROBLEM-DEFINITION: Why this project exists and the problems it solves.
 - ARCHITECTURAL-GOALS: Key objectives (token economy, safety, intelligence).
 - DOCUMENTATION: Links to documentation and mandatory rules.
@@ -22,6 +23,16 @@ This project is an open-source initiative from the Expertos Tech community: [htt
 * [Core Capabilities (Roadmap)](#core-capabilities-roadmap)
 * [Contributing](#contributing)
 * [About Expertos Tech](#about-expertos-tech)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* `mcp-experto-filesystem` is a local-first MCP server for safe, token-efficient filesystem access.
+* The project prioritizes high-level discovery, semantic guidance, and strong write guardrails for AI agents.
+* Use `docs/README.md` and `AGENTS.md` as the main entry points for standards and repository behavior.
+<!-- END TLDR -->
 
 ---
 

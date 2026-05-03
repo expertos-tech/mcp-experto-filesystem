@@ -1,0 +1,7 @@
+* [Home](/)
+* [Architecture](architecture.md)
+* [Development Standards](development-standards.md)
+* [Markdown Standards](markdown-standards.md)
+* [MCP Design Guidelines](mcp-design-guidelines.md)
+* [Local Telemetry Operations](local-telemetry-operations.md)
+* [Code Review](code-review.md)

@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Code review standard for Python and FastMCP projects.
 Sessions:
+- TLDR: Fast summary of the required review approach.
 - REVIEW-PURPOSE: Purpose, scope, and required output location.
 - REVIEW-SOURCES: Local and external references that must guide every review.
 - REVIEW-WORKFLOW: Step-by-step review execution workflow.
@@ -48,6 +49,16 @@ The filename above intentionally follows the project-requested path. Do not sile
 * [Review Output Contract](#review-output-contract)
 * [Copy-Ready AI Review Prompt](#copy-ready-ai-review-prompt)
 * [Definition of Review Done](#definition-of-review-done)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* Reviews in this project must focus on correctness, safety, maintainability, tests, and MCP-specific architecture quality.
+* Every review must use the project standards as the source of truth and save its result to `./docs/last-code-revew.md`.
+* A good review explains long-term risk, not just whether the current code appears to work.
+<!-- END TLDR -->
 
 ---
 

@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Index of all technical documentation and standards for the project.
 Sessions:
+- TLDR: Fast map of the project documentation.
 - DOCUMENTATION-MAP: Table with all documentation files, their purposes, and when to use each.
 - AGENT-RULES: Links to agent rule files that AI agents must read before acting.
 - USAGE-GUIDE: Instructions on how to navigate and use the documentation.
@@ -13,6 +14,16 @@ Sessions:
 * [Documentation Map](#documentation-map)
 * [Agent Rule Files](#agent-rule-files)
 * [How to use this documentation](#how-to-use-this-documentation)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* This file is the central index for repository documentation.
+* Start here to choose the right architecture, standards, or operational guide before editing the project.
+* AI agents must still read `AGENTS.md` first, then use this index for deeper references.
+<!-- END TLDR -->
 
 ---
 
@@ -39,8 +50,8 @@ They are distinct from the technical docs above and must be read before any othe
 
 | File | Purpose |
 | :--- | :--- |
-| **[../AGENTS.md](../AGENTS.md)** | Canonical agent persona, safety rules, git conventions, and command shortcuts. |
-| **[../CLAUDE.md](../CLAUDE.md)** | Claude Code-specific overrides and persona settings (mirrors AGENTS.md with adjustments). |
+| **[AGENTS.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/AGENTS.md)** | Canonical agent persona, safety rules, git conventions, and command shortcuts. |
+| **[CLAUDE.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/CLAUDE.md)** | Claude Code-specific overrides and persona settings (mirrors AGENTS.md with adjustments). |
 <!-- END AGENT-RULES -->
 
 ---
@@ -56,6 +67,7 @@ They are distinct from the technical docs above and must be read before any othe
   for startup, persistence, OTLP wiring, and troubleshooting.
 * **Writing documentation:** Follow [Markdown Standards](./markdown-standards.md) before
   creating or editing any `.md` file.
-* **AI agents:** Read [../AGENTS.md](../AGENTS.md) or [../CLAUDE.md](../CLAUDE.md) first,
+* **AI agents:** Read [AGENTS.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/AGENTS.md)
+  or [CLAUDE.md](https://github.com/expertostech/mcp-experto-filesystem/blob/main/CLAUDE.md) first,
   then use this index to navigate to the relevant technical reference.
 <!-- END USAGE-GUIDE -->

@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Runtime help document for the project_overview MCP tool.
 Sessions:
+- TLDR: Fast summary of the tool and its current status.
 - OVERVIEW: What the tool does and its current implementation status.
 - PARAMETERS: Input contract and parameter details.
 - RETURNS: Current placeholder success payload.
@@ -19,6 +20,16 @@ Sessions:
 * [Errors](#errors)
 * [Examples](#examples)
 * [Notes](#notes)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* `project_overview` is currently a placeholder runtime help document, not a real repository summarizer.
+* It reports the requested depth and placeholder status instead of traversing the project tree.
+* Use this doc to understand the current input and output contract until the real implementation exists.
+<!-- END TLDR -->
 
 ---
 

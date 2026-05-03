@@ -1,6 +1,7 @@
 <!-- AGENTS SUMMARY
 Runtime help document for the read_file_excerpt MCP tool.
 Sessions:
+- TLDR: Fast summary of the tool and its current status.
 - OVERVIEW: What the tool does and its current implementation status.
 - PARAMETERS: Input contract and parameter details.
 - RETURNS: Current placeholder success payload.
@@ -19,6 +20,16 @@ Sessions:
 * [Errors](#errors)
 * [Examples](#examples)
 * [Notes](#notes)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* `read_file_excerpt` is currently a placeholder runtime help document, not a real file reader.
+* It echoes the requested path and line range instead of reading repository content.
+* Use this doc to understand the current input contract and placeholder response shape.
+<!-- END TLDR -->
 
 ---
 

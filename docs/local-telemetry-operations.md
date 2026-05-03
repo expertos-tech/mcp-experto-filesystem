@@ -2,6 +2,7 @@
 Operational guide for the local telemetry stack used to observe the MCP, its CLI,
 and model usage signals when they are emitted.
 Sessions:
+- TLDR: Fast operational summary of the telemetry stack.
 - OVERVIEW: Purpose and scope of the stack.
 - QUICKSTART: Startup and shutdown commands.
 - PERSISTENCE: Local storage layout and cleanup guidance.
@@ -18,6 +19,16 @@ Sessions:
 * [Persistence](#persistence)
 * [Instrumentation](#instrumentation)
 * [Troubleshooting](#troubleshooting)
+
+---
+
+<!-- START TLDR -->
+## TL;DR
+
+* This guide explains how to run the local OTLP, Prometheus, Loki, Tempo, and Grafana stack under `local-telemetry/`.
+* The stack is meant to observe the MCP, the host CLI, and model usage signals when those signals are emitted.
+* Use it for startup, OTLP wiring, persistence layout, and local troubleshooting.
+<!-- END TLDR -->
 
 ---
 
