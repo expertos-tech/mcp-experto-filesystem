@@ -129,6 +129,27 @@ html[data-theme="dark"] body {
   text-decoration: none;
 }
 
+:root {
+  --sidebar-nav-pagelink-background: none;
+  --sidebar-nav-pagelink-background--active: none;
+  --sidebar-nav-pagelink-background--collapse: none;
+  --sidebar-nav-pagelink-background--loaded: none;
+  --sidebar-nav-pagelink-padding: 0.45rem 0.7rem;
+  --sidebar-nav-link-border-color: transparent;
+  --sidebar-nav-link-border-color--active: transparent;
+  --sidebar-nav-link-border-width: 0;
+  --sidebar-nav-link-margin: 0;
+}
+
+.sidebar-nav li.active > a::before,
+.sidebar-nav li.active > a::after,
+.sidebar-nav a.active::before,
+.sidebar-nav a.active::after {
+  content: none !important;
+  background: none !important;
+  display: none !important;
+}
+
 .app-name {
   border-bottom: 1px solid rgba(23, 32, 51, 0.07);
   font-family: "Space Grotesk", sans-serif;
